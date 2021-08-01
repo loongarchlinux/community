@@ -23,13 +23,13 @@ sha256sums=('80a4f3ed14dc83b5ba394308464250771ab69e7281c7a879c65fb2ba97153338')
 b2sums=('f8f0b0af4bd977964adf9e16a343160931e0209ff6db8fd89452d02476c42effe69057ea05d851b8cde6eee05d5852bbab97a985f91aac5f74f16b639c306209')
 
 build() {
-  cd "luajit-2.0-${_commit::7}"
+  cd "LuaJIT-2.1"
   # Avoid early stripping
   make amalg PREFIX=/usr BUILDMODE=dynamic TARGET_STRIP=" @:"
 }
 
 package() {
-  cd "luajit-2.0-${_commit::7}"
+  cd "LuaJIT-2.1"
 
   make install DESTDIR="$pkgdir" PREFIX=/usr
   install -Dm644 COPYRIGHT "$pkgdir/usr/share/licenses/$pkgname/COPYRIGHT"

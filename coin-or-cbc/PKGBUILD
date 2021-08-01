@@ -16,10 +16,10 @@ source=($pkgname-$pkgver.tar.gz::https://github.com/coin-or/Cbc/archive/refs/tag
 sha256sums=('8525abb541ee1b8e6ff03b00411b66e98bbc58f95be1aefd49d2bca571be2eaf')
 
 build() {
-  cd Cbc-releases-$pkgver
+  cd Cbc-releases-$pkgver/Cbc
   ./configure --prefix=/usr \
               --enable-cbc-parallel \
-              --with-nauty-lib=/usr/lib/libnauty.a --with-nauty-incdir=/usr/include/nauty
+              --with-cbc-lib=/usr/lib/libnauty.a --with-cbc-incdir=/usr/include/nauty
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
 }
@@ -30,7 +30,7 @@ check() {
 }
 
 package() {
-  cd Cbc-releases-$pkgver
+  cd Cbc-releases-$pkgver/Cbc
   make DESTDIR="$pkgdir" install
 
 # Remove nauty from linker flags in pc file, it is statically compiled

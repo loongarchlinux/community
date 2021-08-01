@@ -13,6 +13,10 @@ sha512sums=('d856b37f22716eaa71b8e548f6e619a22cbe4edb28519b4f32f60498d7b0af21198
 
 build() {
   cd domain-list-community-$pkgver
+  export GOPROXY=https://goproxy.cn
+  go mod edit -replace=golang.org/x/sys=github.com/golang/sys@v0.0.0-20220622161953-175b2fd9d664
+  go mod edit -replace=golang.org/x/net=github.com/golang/net@v0.0.0-20220622184535-263ec571b305
+  go mod tidy
   ASSUME_NO_MOVING_GC_UNSAFE_RISK_IT_WITH=go1.18 go run main.go
 }
 

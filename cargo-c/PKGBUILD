@@ -15,13 +15,20 @@ sha256sums=('d7c5d6259798abac86a4c8c36884ae7f1591831e74fbd6ce87b7c5e953196f75'
             '9862be36b2f299fbd81d975605682b2a4bdc599300e1aa0bf42bd1653b694cd2')
 
 prepare() {
-    ln -sf "../${pkgname}-${pkgver}.Cargo.lock" "${pkgname}-${pkgver}/Cargo.lock"
-    cargo fetch --locked --manifest-path="${pkgname}-${pkgver}/Cargo.toml"
+    #ln -sf "../${pkgname}-${pkgver}.Cargo.lock" "${pkgname}-${pkgver}/Cargo.lock"
+    find -name Cargo.lock -exec rm -f {} \;
+    mkdir .cargo
+    cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
+    rm ${pkgname}-${pkgver}.Cargo.lock
+    cargo fetch --manifest-path="${pkgname}-${pkgver}/Cargo.toml"
 }
 
 build() {
     export CFLAGS+=' -ffat-lto-objects'
-    cargo build --release --frozen --manifest-path="${pkgname}-${pkgver}/Cargo.toml"
+    cargo build --release --manifest-path="${pkgname}-${pkgver}/Cargo.toml"
 }
 
 check() {
@@ -29,6 +36,6 @@ check() {
 }
 
 package() {
-    cargo install --frozen --offline --no-track --path "${pkgname}-${pkgver}" --root "${pkgdir}/usr"
+    cargo install --no-track --path "${pkgname}-${pkgver}" --root "${pkgdir}/usr"
     install -D -m644 "${pkgname}-${pkgver}/LICENSE" -t "${pkgdir}/usr/share/licenses/${pkgname}"
 }

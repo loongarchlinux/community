@@ -13,14 +13,17 @@ url='https://github.com/upx/upx'
 license=(custom GPL2)
 depends=(ucl)
 makedepends=(git perl)
-source=("git+$url#commit=d7ba31cab8ce8d95d2c10e88d2ec787ac52005ef") # v3.96
-sha256sums=('SKIP')
+source=("git+$url#commit=d7ba31cab8ce8d95d2c10e88d2ec787ac52005ef"
+  0001-just-for-la64-build.patch)
+sha256sums=('SKIP'
+            '2ec868cded2a8fb3b2b366866ce1d9d765d4afd859f8c226c4b085ca4603e3da')
 
 prepare() {
   cd $pkgname
   git submodule update --init --recursive
   # Disable a warning. upx believes this is not a release version if the git revision is set.
   sed -i 's/bool warn = true/bool warn = false/' src/main.cpp
+  patch -p1 -i $srcdir/0001-just-for-la64-build.patch
 }
 
 build() {

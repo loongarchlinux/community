@@ -49,6 +49,12 @@ prepare() {
 build() {
     export CFLAGS+=' -ffat-lto-objects'
     export CXXFLAGS+=' -ffat-lto-objects'
+#    export CC='clang'
+#    export CXX='clang++'
+#    export CFLAGS+=' -DNDEBUG'
+#    export CXXFLAGS+=' -DNDEBUG'
+#  CFLAGS=${CFLAGS/-fstack-clash-protection/}
+#  CXXFLAGS=${CXXFLAGS/-fstack-clash-protection/}
     cmake -B build -S libjxl \
         -DCMAKE_BUILD_TYPE:STRING='Release' \
         -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
@@ -78,6 +84,7 @@ package_libjxl() {
     provides=('libjxl.so' 'libjxl_threads.so')
     
     make -C build DESTDIR="$pkgdir" install
+#install -D -m755 build/tools/libjxl_jni.so -t "${pkgdir}/usr/lib"
     install -D -m644 libjxl/{LICENSE,PATENTS} -t "${pkgdir}/usr/share/licenses/${pkgname}"
     mv "${pkgdir}/usr/share/java"/{org.jpeg.jpegxl,jpegxl}.jar
 }

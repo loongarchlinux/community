@@ -13,11 +13,6 @@ makedepends=('git' 'ant' 'strip-nondeterminism')
 source=("git+https://github.com/bcgit/bc-java.git#tag=$_tag")
 sha512sums=('SKIP')
 
-pkgver() {
-	cd bc-java
-	git describe --tags | sed 's/^r//;s/rv/./;s/\([^-]*-\)g/r\1/;s/-/./g'
-}
-
 build() {
 	cd bc-java
 	ant -f ant/jdk18+.xml clean build-provider build

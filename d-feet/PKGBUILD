@@ -15,6 +15,8 @@ sha512sums=('ff4db968cbd679e2065c614d538187fe3c56118b44638771ec9f7472bdba4a798dc
 
 prepare() {
   cd $pkgname-$pkgver
+  sed -i '16d' data/meson.build
+  sed -i '27d' data/meson.build
 }
 
 build() {

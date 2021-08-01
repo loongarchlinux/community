@@ -18,7 +18,8 @@ source=(${url}/dist/v${pkgver}/node-v${pkgver}.tar.xz
         ${pkgname}-openssl3-fix-test-tls-no-sslv3.patch::https://github.com/nodejs/node/commit/0828a96c10d1.patch
         fix-test-tls-session-cache.patch
         icu72.patch
-        libnghttp1.45.1_compat.patch)
+        libnghttp1.45.1_compat.patch
+        0001-LA64-add-loong64-support-v14.19.0.patch)
 # https://nodejs.org/download/release/latest-fermium/SHASUMS256.txt.asc
 sha256sums=(d8f09a0f16773a77613c3817606f6d455624992d9c43443aca15e91807a1ff03
             bb5f91aeb0f87e7bcbed531fe8922beec1b51bd2ceeec91e9d25ede800817459
@@ -40,6 +41,7 @@ prepare() {
   patch -p0 < ../fix-test-tls-session-cache.patch
   patch -p1 < ../icu72.patch
   patch -p1 < ../libnghttp1.45.1_compat.patch
+  patch -p1 < ../0001-LA64-add-loong64-support-v14.19.0.patch
 }
 
 build() {

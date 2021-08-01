@@ -9,11 +9,14 @@ arch=('loong64' 'x86_64')
 url='https://abseil.io'
 license=('Apache')
 makedepends=('cmake')
-source=("https://github.com/abseil/abseil-cpp/archive/$pkgver/$pkgname-$pkgver.tar.gz")
-sha256sums=('91ac87d30cc6d79f9ab974c51874a704de9c2647c40f6932597329a282217ba8')
+source=("https://github.com/abseil/abseil-cpp/archive/$pkgver/$pkgname-$pkgver.tar.gz"
+        abseil-cpp-la64.patch)
+sha256sums=('91ac87d30cc6d79f9ab974c51874a704de9c2647c40f6932597329a282217ba8'
+            '8817cf256a94dd9059bccd540a4d6bbe0d9606c600e8543a1b1011226c350b23')
 
 prepare() {
   cd "$srcdir/$pkgname-$pkgver"
+  patch -p1 -i $srcdir/abseil-cpp-la64.patch
   cmake -Bbuild \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_CXX_FLAGS="-DNDEBUG" \

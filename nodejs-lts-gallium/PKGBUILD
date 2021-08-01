@@ -16,7 +16,8 @@ provides=("nodejs=$pkgver")
 conflicts=(nodejs)
 source=(${url}/dist/v${pkgver}/node-v${pkgver}.tar.xz
         fix-test-socket-write-after-fin-error.patch
-        icu72.patch)
+        icu72.patch
+        nodejs-la64-16.6.0.patch)
 # https://nodejs.org/download/release/latest-gallium/SHASUMS256.txt.asc
 sha256sums=('17fb716406198125b30c94dd3d1756207b297705626afe16d8dc479a65a1d8b5'
             'bb4df6373e4ab93478089268949934efbdd7bb060f35e8d7262af6b2dda4b948'
@@ -35,6 +36,7 @@ prepare() {
   cd node-v${pkgver}
   patch -Np1 -i ../fix-test-socket-write-after-fin-error.patch
   patch -Np1 -i ../icu72.patch
+  patch -p1 -i $srcdir/nodejs-la64-16.6.0.patch
 }
 
 build() {

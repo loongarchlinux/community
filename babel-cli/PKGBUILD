@@ -22,6 +22,7 @@ sha512sums=('5b29607042c707ae96c10a88b713482ec32569377cfd23ba4a04d38cca78b8223b3
             'fc5471459770967e2632efb110b8370caa3424b7d87c1180f49605f7e6b1593746888b6c99c713c0c3046c5833c01c1a15bf3d549a343eaa077885bcc9f3d4e3')
 
 package() {
+  npm config set registry https://registry.loongnix.cn:5873/
   npm install -g --legacy-peer-deps --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 

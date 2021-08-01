@@ -17,12 +17,25 @@ b2sums=('33fd35fd7ff0b90b451261b48133f2f78ef7edae4c633950850d918f577f204d32d6d8f
 
 prepare() {
   cd $pkgname-$pkgver
-  cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+  find -name Cargo.lock -exec rm -f {} \;
+  mkdir -p .cargo
+  cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
+  cargo fetch #--target "`uname -m`-unknown-linux-gnu"
 }
 
 build() {
   cd $pkgname-$pkgver
-  cargo build --frozen --release --all-features
+  export RUST_BACKTRACE=1
+  find -name Cargo.lock -exec rm -f {} \;
+  mkdir -p .cargo
+  cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
+  cargo build --release --all-features
 }
 
 package() {

@@ -21,13 +21,19 @@ sha256sums=('ac6847ce55ba284184d0792afb53c6579da415600bc1b01c180dd87ad34597d0')
 
 prepare() {
 	cd "$_archive"
-	cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+#	cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
 	mkdir {completions,man}
 }
 
 build() {
 	cd "$_archive"
-	cargo build --frozen --release
+    find -name Cargo.lock -exec rm -f {} \;
+    mkdir -p .cargo
+    cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
+	cargo build --release
 	local compgen="target/release/$_bin generate-completions"
 	$compgen bash > "completions/$_bin"
 	$compgen fish > "completions/$_bin.fish"

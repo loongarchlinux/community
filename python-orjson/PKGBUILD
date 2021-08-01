@@ -18,6 +18,12 @@ b2sums=('7a5a029175eb1d0f014b84de4ebd65831d1c93593acb4f672a728ad89410c9c7e421c35
 
 build() {
   cd $_name-$pkgver
+  find -name Cargo.lock -exec rm -f {} \;
+  mkdir -p .cargo
+  cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
   maturin build --release --strip
 }
 

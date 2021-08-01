@@ -9,8 +9,15 @@ arch=(loong64 x86_64)
 url="https://camaya.net/gloox"
 license=("GPL")
 depends=('libidn' 'gnutls')
-source=(https://camaya.net/download/gloox-$pkgver.tar.bz2)
-sha256sums=('ae1462be2a2eb8fe5cd054825143617c53c2c9c7195606cb5a5ba68c0f68f9c9')
+source=(https://camaya.net/download/gloox-$pkgver.tar.bz2
+        gloox-fix-build.patch)
+sha256sums=('ae1462be2a2eb8fe5cd054825143617c53c2c9c7195606cb5a5ba68c0f68f9c9'
+            '4476111313494a51f6faca57c246ad7179c4eb4c40c7c47231e8a47f32309212')
+
+prepare() {
+  cd "$srcdir"/gloox-$pkgver
+  patch -p1 -i $srcdir/gloox-fix-build.patch
+}
 
 build() {
   cd "$srcdir"/gloox-$pkgver

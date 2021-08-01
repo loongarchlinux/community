@@ -25,6 +25,11 @@ build() {
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CPPFLAGS="${CPPFLAGS}"
   export CGO_CXXFLAGS="${CXXFLAGS}"
+  export GOPROXY=https://goproxy.cn
+  sed -i 's/-mod=vendor//' build_linux.sh
+  go mod edit -replace=golang.org/x/sys=github.com/golang/sys@v0.0.0-20220622161953-175b2fd9d664
+  go mod edit -replace=golang.org/x/net=github.com/golang/net@v0.0.0-20220622184535-263ec571b305
+  go mod tidy
   ./build_linux.sh
 }
 

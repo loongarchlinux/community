@@ -15,6 +15,12 @@ sha256sums=('d121bbfb380a54aca8ea9d973c2e63afcbc1db67db46ea6bc63eeba44d7937c8')
 
 build() {
     cd "$srcdir/$pkgname-$pkgver/imagequant-sys"
+    find -name Cargo.lock -exec rm -f {} \;
+    mkdir -p .cargo
+    cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
     cargo cbuild --release --prefix=/usr
 }
 

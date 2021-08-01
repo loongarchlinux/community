@@ -14,8 +14,19 @@ install=$pkgname.install
 backup=('etc/iscsi/iscsid.conf'
 	'etc/iscsi/initiatorname.iscsi')
 options=('docs')
-source=("$pkgname-$pkgver.tar.gz::https://github.com/open-iscsi/open-iscsi/archive/$pkgver.tar.gz")
-sha256sums=('9565bdf6b68b223e1e0d455d9a04d7536724a3f5b5a254e9398d06b2a0c6b6d2')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/open-iscsi/open-iscsi/archive/$pkgver.tar.gz"
+        '0001-etc-install-system-unit-with-without-executable-bit.patch'
+        open-iscsi-fix-build.patch)
+sha256sums=('9565bdf6b68b223e1e0d455d9a04d7536724a3f5b5a254e9398d06b2a0c6b6d2'
+            '4958b838c548f6797ee25aea47b018a03be2ee11299ff41e9b56ad74f1121ead'
+            'cd5bf6edfea73e43b0f37f6b53508181b52e3007419fed0cb4c82e7ee5336933')
+
+prepare() {
+  cd "$srcdir"/${pkgname}-${pkgver}
+
+  patch -Np1 < ../0001-etc-install-system-unit-with-without-executable-bit.patch
+  patch -p1 -i $srcdir/open-iscsi-fix-build.patch
+}
 
 build() {
   cd "$srcdir"/${pkgname}-${pkgver}

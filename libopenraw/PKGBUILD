@@ -14,14 +14,18 @@ license=('LGPL')
 depends=('gdk-pixbuf2')
 makedepends=('boost' 'libxml2' 'cargo')
 provides=('libopenraw.so' 'libopenrawgnome.so')
-source=("https://libopenraw.freedesktop.org/download/${pkgname}-${pkgver}.tar.bz2"{.asc,})
+source=("https://libopenraw.freedesktop.org/download/${pkgname}-${pkgver}.tar.bz2"{.asc,}
+        libopenraw-fix-build.patch)
 b2sums=('SKIP'
-        '9f739e7c70c91dfc30e2869922aa2f245d13e897bed435d4c77a2c3bd0923b3c0ed626b133b626c1f312fae46027b38780ab4f184c6112ec7977d46c44dc62f5')
+        '9f739e7c70c91dfc30e2869922aa2f245d13e897bed435d4c77a2c3bd0923b3c0ed626b133b626c1f312fae46027b38780ab4f184c6112ec7977d46c44dc62f5'
+        'd2723fc4c483045e67fac1b1b84900b6c2148f31174dda3c2f7c88d466845972166de6e90a2b6db336883577417ae85595a07fdddd54d87d4ea182eb6c935bb2')
 validpgpkeys=('6C44DB3E0BF3EAF5B433239A5FEE05E6A56E15A3') # Hubert Figuiere <hub@mozilla.com>
 
 prepare() {
+  cd ${pkgname}-${pkgver}
 # Fix libopenraw dependency in -gnome pc file
-  sed -e 's|libopenraw-0.1|libopenraw-0.3|' -i $pkgname-$pkgver/gnome/libopenraw-gnome-0.3.pc.in
+  sed -e 's|libopenraw-0.1|libopenraw-0.3|' -i gnome/libopenraw-gnome-0.3.pc.in
+  patch -p1 -i $srcdir/libopenraw-fix-build.patch
 }
 
 build() {

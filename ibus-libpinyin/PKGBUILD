@@ -13,7 +13,7 @@ arch=('loong64' 'x86_64')
 license=('LGPL')
 url="https://github.com/libpinyin/ibus-libpinyin"
 depends=('ibus' 'libpinyin' 'lua' 'opencc' 'python-pyxdg')
-makedepends=('boost' 'git' 'gnome-common' 'intltool')
+makedepends=('boost' 'git' 'gnome-common' 'intltool' 'libsoup')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/libpinyin/ibus-libpinyin/archive/$pkgver.tar.gz")
 sha512sums=('8eca89c3c71ada37ec93307556fc476ad8719e58ca828f684dff6e74e1cb91df3e8c8ce03c87dbb72d5b7213e7c7ca367da8cf6b1dddb47d63afdf23d53bc54c')
 

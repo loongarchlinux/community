@@ -1,0 +1,39 @@
+From 8a465a2e3c9282a77f4d6894b0b47ae1b5f9b6ea Mon Sep 17 00:00:00 2001
+From: Shi Pujin <shipujin.t@gmail.com>
+Date: Tue, 8 Nov 2022 22:26:48 +0800
+Subject: [PATCH] deps: V8: cherry-pick 56816d76c121
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Original commit message:
+
+    [loong64] Supplement a LoongArch support in include/v8config.h
+
+    Change-Id: I658c1b781163bcd3ca39bfceb74aef9d255247b8
+    Reviewed-on: https://chromium-review.googlesource.com/c/v8/v8/+/3894795
+    Reviewed-by: Toon Verwaest <verwaest@chromium.org>
+    Commit-Queue: Liu Yu <liuyu@loongson.cn>
+    Cr-Commit-Position: refs/heads/main@{#83374}
+
+PR-URL: https://github.com/nodejs/node/pull/45353
+Refs: https://github.com/v8/v8/commit/56816d76c121c8dd5b406dc6019350eee05f4abd
+Reviewed-By: Michaël Zasso <targos@protonmail.com>
+Reviewed-By: Jiawen Geng <technicalcute@gmail.com>
+---
+ deps/v8/include/v8config.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/deps/v8/include/v8config.h b/deps/v8/include/v8config.h
+index 6753eb083b3c..207afac8b0ad 100644
+--- a/deps/v8/include/v8config.h
++++ b/deps/v8/include/v8config.h
+@@ -703,6 +703,8 @@ V8 shared library set USING_V8_SHARED.
+ #define V8_TARGET_ARCH_ARM 1
+ #elif defined(__mips64)
+ #define V8_TARGET_ARCH_MIPS64 1
++#elif defined(__loongarch64)
++#define V8_TARGET_ARCH_LOONG64 1
+ #elif defined(_ARCH_PPC64)
+ #define V8_TARGET_ARCH_PPC64 1
+ #elif defined(_ARCH_PPC)

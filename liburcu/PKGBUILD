@@ -10,10 +10,18 @@ arch=('loong64' 'x86_64')
 url="https://lttng.org/urcu"
 license=('LGPL2.1')
 validpgpkeys=('2A0B4ED915F2D3FA45F5B16217280A9781186ACF')
-source=(https://lttng.org/files/urcu/userspace-rcu-${pkgver}.tar.bz2{,.asc})
+source=(https://lttng.org/files/urcu/userspace-rcu-${pkgver}.tar.bz2{,.asc}
+        userspace-rcu-loongarch64.patch)
 depends=()
 sha1sums=('817b872d795b1552349f9d5bb6c3e2bc6f3804eb'
-          'SKIP')
+          'SKIP'
+          'd11fde0e2f6bc06be806829f271b2d814ce69faf')
+
+prepare() {
+    cd "$srcdir"/userspace-rcu-${pkgver}
+    patch -p1 -i "$srcdir/userspace-rcu-loongarch64.patch"
+    autoreconf -vfi
+}
 
 build() {
     cd "$srcdir"/userspace-rcu-${pkgver}

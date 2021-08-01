@@ -19,13 +19,19 @@ sha256sums=('c0faf07ff45d4d1bd45c35f2211dec9fd29edb7782e13dc2572e072f08919773')
 
 prepare() {
   cd "mdBook-${pkgver}"
+  find -name Cargo.lock -exec rm -f {} \;
+  mkdir -p .cargo
+  cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
   mkdir completions/
-  cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+  cargo fetch --target "`uname -m`-unknown-linux-gnu"
 }
 
 build() {
   cd "mdBook-${pkgver}"
-  cargo build --frozen --release
+  cargo build --release
   "./target/release/$pkgname" completions bash > "completions/$pkgname.bash"
   "./target/release/$pkgname" completions fish > "completions/$pkgname.fish"
   "./target/release/$pkgname" completions zsh > "completions/_$pkgname"

@@ -79,7 +79,7 @@ package_libjxl() {
     
     make -C build DESTDIR="$pkgdir" install
     install -D -m644 libjxl/{LICENSE,PATENTS} -t "${pkgdir}/usr/share/licenses/${pkgname}"
-    mv "${pkgdir}/usr/share/java"/{org.jpeg.jpegxl,jpegxl}.jar
+#    mv "${pkgdir}/usr/share/java"/{org.jpeg.jpegxl,jpegxl}.jar
 }
 
 package_libjxl-doc() {

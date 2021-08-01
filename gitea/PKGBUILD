@@ -48,6 +48,9 @@ pkgver() {
 
 prepare() {
   cd ${pkgname}
+  npm config set registry https://registry.loongnix.cn:5873/
+  go mod edit -replace=golang.org/x/sys=github.com/golang/sys@v0.0.0-20220622161953-175b2fd9d664
+  go mod tidy
   make deps
 }
 
@@ -57,9 +60,11 @@ build() {
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CXXFLAGS="${CXXFLAGS}"
   export CGO_LDFLAGS="${LDFLAGS}"
-  export EXTRA_GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
+  export EXTRA_GOFLAGS="-trimpath -mod=readonly -modcacherw"
   export LDFLAGS="-X 'code.gitea.io/gitea/modules/setting.AppWorkPath=/var/lib/gitea/' -X 'code.gitea.io/gitea/modules/setting.CustomConf=/etc/gitea/app.ini'"
   export TAGS="bindata sqlite sqlite_unlock_notify pam"
+  go mod edit -replace=golang.org/x/sys=github.com/golang/sys@v0.0.0-20220622161953-175b2fd9d664
+  go mod tidy
   make -j1
 }
 

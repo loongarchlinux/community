@@ -33,7 +33,6 @@ build() {
   export GOPROXY=off
   go build \
     -trimpath \
-    -buildmode=pie \
     -mod=readonly \
     -tags noupgrade \
     -ldflags "-X github.com/twpayne/chezmoi/cmd.DocsDir=/usr/share/doc/$pkgname \

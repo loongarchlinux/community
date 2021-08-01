@@ -9,7 +9,7 @@ arch=(loong64 x86_64)
 url="https://ispc.github.io/"
 license=(BSD)
 depends=(ncurses zlib llvm-libs clang spirv-llvm-translator)
-makedepends=(llvm python lib32-glibc cmake level-zero-headers level-zero-loader openmp vc-intrinsics)
+makedepends=(llvm python cmake level-zero-headers level-zero-loader openmp vc-intrinsics)
 optdepends=(
     'intel-compute-runtime: GPU support'
     'level-zero-loader: GPU support'

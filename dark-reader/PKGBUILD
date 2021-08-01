@@ -15,6 +15,7 @@ b2sums=('9638f286e00ac9b345021c085e1e4770dcaea23217f4b9ad865cd96f4fb8892edfaf8ad
 
 prepare() {
   cd darkreader-$pkgver
+  npm config set registry https://registry.loongnix.cn:5873/
   npm ci
 }
 

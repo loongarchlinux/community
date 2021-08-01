@@ -23,12 +23,12 @@ _tag=5dd7aa0cde826abbc27bb9e18433e15851e5e59a
 source=(git+https://github.com/Ousret/charset_normalizer.git#tag=${_tag})
 b2sums=(SKIP)
 
-pkgver() {
-  cd charset_normalizer
-  _version=$(git describe --tags)
-  sed "s/2.1.0/${_version}/" -i charset_normalizer/version.py
-  echo ${_version}
-}
+#pkgver() {
+#  cd charset_normalizer
+#  _version=$(git describe --tags)
+#  sed "s/2.1.0/${_version}/" -i charset_normalizer/version.py
+#  echo ${_version}
+#}
 
 build() {
   cd charset_normalizer

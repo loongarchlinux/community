@@ -25,7 +25,7 @@ prepare(){
 
 build() {
   cd "$pkgname-$pkgver"
-  export GOFLAGS="-buildmode=pie -trimpath"
+  export GOFLAGS="-trimpath"
   export CGO_LDFLAGS="${LDFLAGS}"
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CPPFLAGS="${CPPFLAGS}"

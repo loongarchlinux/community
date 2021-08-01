@@ -12,11 +12,19 @@ license=('BSD')
 depends=('python')
 makedepends=(python-setuptools-scm python-wheel python-build python-installer)
 checkdepends=('python-six' 'python-pytest')
-source=(https://github.com/ultrajson/ultrajson/archive/$pkgver/$pkgname-$pkgver.tar.gz)
-sha512sums=('12a330d2b005893c010c65d9a2ae8de3e15d3597671123ae2401de4ce835be0fb5e085b50bb575b7053d7c812a6a2115212f30e29ce0a8eb0ddf37cfa668ee77')
-b2sums=('4e70fe5aa9cf33d8ad4dfbd0d90928605d19d1e9baf7143c8592a5ffdd4db61310a333aac946500a8dc5702c623ddeb67c40138908b6437e2092f33787e1184c')
+source=(https://github.com/ultrajson/ultrajson/archive/$pkgver/$pkgname-$pkgver.tar.gz
+        python-ultrajson-la64.patch)
+sha512sums=('12a330d2b005893c010c65d9a2ae8de3e15d3597671123ae2401de4ce835be0fb5e085b50bb575b7053d7c812a6a2115212f30e29ce0a8eb0ddf37cfa668ee77'
+            '6b72a18c5e1d3e7f48fc52651898607d75131edd1c2a731eb1afa3062a545d6d00a14210a41b9683ff68813722b60078640cca9d2cc6d37f5c3e862c301c5999')
+b2sums=('4e70fe5aa9cf33d8ad4dfbd0d90928605d19d1e9baf7143c8592a5ffdd4db61310a333aac946500a8dc5702c623ddeb67c40138908b6437e2092f33787e1184c'
+        '5e5e9c4712b2da1ee08b7c70cdabad254574161d53d78a1a6965a8e12273ba992b0461bdc4dbd2b4f27d6815242ba595a42ec4fc868e99e15f763b3799365ca9')
 
 export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+
+prepare() {
+  cd ${_pkgname}-${pkgver}
+  patch -p1 -i $srcdir/python-ultrajson-la64.patch
+}
 
 build() {
   cd ${_pkgname}-${pkgver}

@@ -16,6 +16,7 @@ b2sums=('6c85751ac1f9e41528e486c4838faf34cd595e7c3ac2dd3efb5a13e1e12ab1a4f2fd2ec
 
 prepare() {
   cd $pkgname-$pkgver
+  npm config set registry https://registry.loongnix.cn:5873/
   npm install
 }
 
@@ -26,6 +27,7 @@ check() {
 
 package() {
   cd $pkgname-$pkgver
+  npm config set registry https://registry.loongnix.cn:5873/
 
   npm prune --production
 

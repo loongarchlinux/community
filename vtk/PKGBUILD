@@ -128,3 +128,10 @@ package() {
   # … as well as duplicate copies
   rm -rv "${pkgdir}"/usr/lib/cmake/vtk/vtkm/{Find*.cmake,cmake/{Find*.cmake,3.15}}
 }
+sha256sums=('8fed42f4f8f1eb8083107b68eaa9ad71da07110161a3116ad807f43e5ca5ce96'
+            '37cff664c4eaacf44ecb995e62e9e54e54880bae0857d598c74660a2159ccb2e'
+            '955ef22d2541beb9935557ef09a802b6504855a350f27ff056734679da8f0281'
+            'dbc9a67caf548cf5afd571018d91aadcfcf78ddf8c66ac75b0772935e26ad29f'
+            '1272fafccd3d9677f3fd9cc0a70e47a21f6ec86379765e25c6bccd9053875259'
+            '675707ec492182d1f0c8f4682775613dd9b5d315596af8df99ad4d758196e9c3'
+            'c0729cc2126a446c314c02eadfd4efc6701cec4ea12f27bd8af092da2cd181e3')

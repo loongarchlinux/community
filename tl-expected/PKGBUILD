@@ -8,8 +8,16 @@ arch=('any')
 url="https://github.com/TartanLlama/expected"
 license=('custom:CC0')
 makedepends=('cmake' 'git' 'ninja')
-source=("expected-v${pkgver}.tar.gz::https://github.com/TartanLlama/expected/archive/v${pkgver}.tar.gz")
-sha256sums=('1db357f46dd2b24447156aaf970c4c40a793ef12a8a9c2ad9e096d9801368df6')
+source=("expected-v${pkgver}.tar.gz::https://github.com/TartanLlama/expected/archive/v${pkgver}.tar.gz"
+        expected-la64.patch)
+sha256sums=('1db357f46dd2b24447156aaf970c4c40a793ef12a8a9c2ad9e096d9801368df6'
+            'e331c2ec3dbb5c41d2c4fc08bf6f169b7fba1d726f8e5edeb8ed829e77fb6909')
+
+prepare() {
+    mkdir "expected-$pkgver/build"
+    cd "expected-$pkgver"
+    patch -p1 -i $srcdir/expected-la64.patch
+}
 
 build() {
   cd "expected-$pkgver"

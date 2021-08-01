@@ -97,3 +97,5 @@ package() {
   install -vDm 644 $_pkgname.zsh "$pkgdir/usr/share/zsh/site-functions/_$_pkgname"
   install -vDm 644 $_pkgname.fish -t "$pkgdir/usr/share/fish/vendor_completions.d/"
 }
+sha256sums=('6be8d7e4c198045924a25efb90285b92918a0d7e539bfa1c76127cd41b01466c'
+            'e44c71a3b804b5c2bf07573ed465aee275a5844f10e37ee63c7395c9213a2b6d')

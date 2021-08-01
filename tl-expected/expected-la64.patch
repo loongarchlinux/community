@@ -1,0 +1,14 @@
+Index: expected-1.0.0/tests/catch.hpp
+===================================================================
+--- expected-1.0.0.orig/tests/catch.hpp
++++ expected-1.0.0/tests/catch.hpp
+@@ -1549,6 +1549,9 @@ namespace Catch {
+ // start catch_totals.h
+ 
+ #include <cstddef>
++#ifdef __loongarch64
++#define SIGSTKSZ 16384
++#endif
+ 
+ namespace Catch {
+ 

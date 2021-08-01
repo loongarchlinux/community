@@ -9,7 +9,7 @@ url='https://github.com/kpcyrd/acme-redirect'
 arch=('loong64' 'x86_64')
 license=('GPL3')
 depends=('openssl')
-makedepends=('cargo' 'scdoc')
+makedepends=('rust' 'scdoc')
 backup=('etc/acme-redirect.conf')
 source=(https://github.com/kpcyrd/${pkgname}/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz
         https://github.com/kpcyrd/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz.asc)
@@ -22,13 +22,20 @@ validpgpkeys=("64B13F7117D6E07D661BBCE0FE763A64F5E54FD6")
 
 prepare() {
   cd "${pkgname}-${pkgver}"
-  cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+  mkdir .cargo
+  cat > .cargo/config.toml <<EOF
+[source]
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
+  cargo update
+  cargo fetch --target "`uname -m`-unknown-linux-gnu"
 }
 
 build() {
   cd "${pkgname}-${pkgver}"
   CFLAGS+=' -ffat-lto-objects'
-  cargo build --frozen --release
+  cargo build --release
   make docs
 }
 

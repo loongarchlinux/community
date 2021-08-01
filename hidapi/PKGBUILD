@@ -14,8 +14,15 @@ makedepends=('systemd' 'systemd-libs' 'libusb')
 optdepends=('libusb: for the libusb backend -- hidapi-libusb.so'
             'libudev.so: for the hidraw backend -- hidapi-hidraw.so')
 provides=('libhidapi-hidraw.so' 'libhidapi-libusb.so')
-source=("https://github.com/libusb/${pkgname}/archive/${pkgname}-${pkgver}.tar.gz")
-sha512sums=('866268927698db6fa553e000ead3c0c4b8df67ea768d36acac9c71f06f0bd8283778e90eee03f81aaa930f38dbb5719391906c7d2742b74479ffa436104f5fa4')
+source=("https://github.com/libusb/${pkgname}/archive/${pkgname}-${pkgver}.tar.gz"
+	hidapi-fix-build.patch)
+sha512sums=('866268927698db6fa553e000ead3c0c4b8df67ea768d36acac9c71f06f0bd8283778e90eee03f81aaa930f38dbb5719391906c7d2742b74479ffa436104f5fa4'
+            '3b2c99cb3d64653a1ec567cbd5b205e2f9529710e490bdff3ef253141b0f3f4129a5f02b1bcecf21f85370330a405db99521dfe5cd056eee0efbea4c13aed52d')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgname}-${pkgver}"
+  #patch -p1 -i "$srcdir/hidapi-fix-build.patch"
+}
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgname}-${pkgver}"

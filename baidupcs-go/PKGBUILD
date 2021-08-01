@@ -17,10 +17,13 @@ sha512sums=('1f3c5e550daf371919d66e143fc6f9d50992cf009d3efce8c1baf30b72658bf4aa2
 
 build() {
   cd BaiduPCS-Go-$pkgver
-  export GOFLAGS="-buildmode=pie -trimpath"
+  export GOFLAGS="-trimpath"
   export CGO_LDFLAGS="${LDFLAGS}"
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CPPFLAGS="${CPPFLAGS}"
+  export GOPROXY=https://goproxy.cn
+  go mod edit -replace=golang.org/x/sys=github.com/golang/sys@v0.0.0-20220622161953-175b2fd9d664
+  go mod tidy
   go build -o baidupcs-go
 }
 

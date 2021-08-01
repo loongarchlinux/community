@@ -19,10 +19,7 @@ sha256sums=('SKIP'
 
 build() {
   cd "${srcdir}"/splint-patched
-  automake --add-missing || true
-  autoreconf || true
-  automake --add-missing
-  autoreconf
+  autoreconf -vfi
   ./configure --prefix=/usr --mandir=/usr/share/man
   make -j1
 }

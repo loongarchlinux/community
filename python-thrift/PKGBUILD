@@ -10,7 +10,7 @@ url='https://thrift.apache.org/'
 depends=(python)
 makedepends=(python-setuptools)
 source=(thrift-$pkgver.zip::https://github.com/apache/thrift/archive/$pkgver.zip)
-sha256sums=('fb3e4287a17504f27b419f16603f3f55c27b17ed72c1996d2dd3a8b2a5016293')
+sha256sums=('9de0eac427ab7185e6958b8e20f400652b891c59feb67433fcc4cfa9c4c600d0')
 
 check() {
   cd thrift-$pkgver/lib/py

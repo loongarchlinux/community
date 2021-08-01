@@ -15,16 +15,23 @@ source=("https://github.com/v2fly/v2ray-core/archive/v$pkgver/$pkgname-$pkgver.t
 sha512sums=('78805d1fe4b1153dd654e61b4d2e3fedf6c5055e69ce4b86bfae1214904eca2da09595dc0d6b5873ad06e4a6f91a061eaae1f75e363e851693a50b0c26ad25e2')
 
 prepare() {
+  cd $srcdir
+  git clone https://github.com/golang/sys.git
+  git clone https://github.com/golang/net.git
   cd v2ray-core-$pkgver
   sed -i 's|/usr/local/bin|/usr/bin|;s|/usr/local/etc|/etc|' release/config/systemd/system/*.service
 }
 
 build() {
   cd v2ray-core-$pkgver
-  export GOFLAGS="-buildmode=pie -trimpath -ldflags=-linkmode=external"
+  export GOFLAGS="-trimpath -ldflags=-linkmode=external"
   export CGO_LDFLAGS="${LDFLAGS}"
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CPPFLAGS="${CPPFLAGS}"
+  export GOPATH="$srcdir/build:/usr/share/gocode"
+  go mod edit -replace=golang.org/x/sys@v0.0.0-20210903071746-97244b99971b=$srcdir/sys
+  go mod edit -replace=golang.org/x/net@v0.0.0-20210903162142-ad29c8ab022f=$srcdir/net
+  go mod tidy
   go build -o v2ray ./main
   go build -o v2ctl ./infra/control/main
 }

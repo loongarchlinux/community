@@ -24,7 +24,7 @@ build() {
   cd $pkgname-$pkgver
   ./configure \
     --enable-experimental \
-    --enable-sse \
+    --disable-sse \
     --prefix=/usr \
     --with-lv2
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool

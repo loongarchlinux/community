@@ -11,10 +11,17 @@ license=('GPL')
 depends=('boost-libs' 'fcitx5')
 makedepends=('boost' 'extra-cmake-modules' 'ninja' 'python')
 options=('debug')
-source=("https://download.fcitx-im.org/fcitx5/libime/libime-${pkgver}_dict.tar.xz"{,.sig})
+source=("https://download.fcitx-im.org/fcitx5/libime/libime-${pkgver}_dict.tar.xz"{,.sig}
+        libime-la64.patch)
 sha512sums=('ce1dc44bef0ae88ae84ee3c5663db762370c40d75cb7dcc1deaac957fae95c069c1b93608a5df600746ee63b4babc4cb1043b371f081e2f91425c32d9b0ccd43'
-            'SKIP')
+            'SKIP'
+            '7699f47c5034d70bd61aa6648cf2ad817c9e9dabf0472f2651cfb214f776db3d6ae8ccce6937fc0c6b6fba9b7091113f646272b688476f16f1d7d175fafe58ec')
 validpgpkeys=('2CC8A0609AD2A479C65B6D5C8E8B898CBF2412F9') # Weng Xuetian <wengxt@gmail.com>
+
+prepare() {
+	cd "$pkgname-$pkgver"
+	patch -p1 -i "$srcdir/libime-la64.patch"
+}
 
 build(){
   cd $pkgname-$pkgver

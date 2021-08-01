@@ -16,6 +16,11 @@ source=("${pkgname}-${pkgver}.tar.gz::https://gitlab.com/api/v4/projects/gitlab-
 sha512sums=('724f8901bc3fb93cbe40104d4b5e5072dcf24b81b5520fbe91b6b2c91b9ff869edf6398acbf9d04a2c95a19b50888c975552fd1f369cc4787eb8dc78bf2eded6'
             '893527f270179fc78ff60e33f0b44abd984d1e9859dd5bf59fea77245ddd4c1c252d2c7882719366944d0f9341a90b5e077470b15afcc3df419b0d0a9f2e6d56')
 
+prepare() {
+  cd $srcdir
+  proxychains -q git clone https://github.com/golang/sys.git
+}
+
 build() {
   cd "${pkgname}-v${pkgver}-"*
 
@@ -23,7 +28,11 @@ build() {
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CXXFLAGS="${CXXFLAGS}"
   export CGO_LDFLAGS="${LDFLAGS}"
-  export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
+  export GOFLAGS="-trimpath -mod=readonly -modcacherw"
+
+  sed -i 's/h1:t2Wr8ygtvHfXAMlCkoEdk5pdb5Gy1IYdr41H7t4kAYw=/h1:eM1EseVswFkYZxGpWpj3HcRjwRtEXnuh3KDIIhO0WTw=/' go.sum
+  go mod edit -replace=golang.org/x/sys@v0.0.0-20210110051926-789bb1bd4061=$srcdir/sys
+
   make
 }
 

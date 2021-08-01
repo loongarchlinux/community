@@ -44,6 +44,13 @@ validpgpkeys=(
 )
 install=gitea.install
 
+prepare() {
+  cd ${pkgname}
+  # Fetch dependency using go mod
+  go mod tidy
+  make vendor
+}
+
 pkgver() {
   cd ${pkgname}
   git describe --tags | sed 's/^v//'
@@ -56,13 +63,16 @@ prepare() {
 
 build() {
   cd ${pkgname}
+export http_proxy=10.40.25.25:2014
+export https_sproxy=10.40.25.25:2014
   export CGO_CPPFLAGS="${CPPFLAGS}"
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CXXFLAGS="${CXXFLAGS}"
   export CGO_LDFLAGS="${LDFLAGS}"
-  export EXTRA_GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
+  export EXTRA_GOFLAGS="-trimpath -mod=readonly -modcacherw"
   export LDFLAGS="-X 'code.gitea.io/gitea/modules/setting.AppWorkPath=/var/lib/gitea/' -X 'code.gitea.io/gitea/modules/setting.CustomConf=/etc/gitea/app.ini'"
   export TAGS="bindata sqlite sqlite_unlock_notify pam"
+#echo "registry=http://registry.loongnix.cn:5873/" > .npmrc
   make -j1
 }
 

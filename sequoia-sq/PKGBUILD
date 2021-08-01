@@ -23,7 +23,8 @@ validpgpkeys=(
 build() {
   cd sequoia/sq
   export CARGO_TARGET_DIR=../target
-  cargo build --release --locked --features 'crypto-nettle compression-bzip2 autocrypt'
+  rm -f Carto.lock
+  cargo build --release --features 'crypto-nettle compression net autocrypt'
 }
 
 check() {

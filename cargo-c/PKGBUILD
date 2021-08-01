@@ -15,8 +15,9 @@ sha256sums=('d700c6cc93d06c5ed7a887f51d87d47e88e783dfc1b28d00b951625c4d3ce509'
             'c1a035c1e69b980d57f20005802699cf5fb63a02423a40ff1675238781db159e')
 
 prepare() {
-    ln -sf "../${pkgname}-${pkgver}.Cargo.lock" "${pkgname}-${pkgver}/Cargo.lock"
-    cargo fetch --locked --manifest-path="${pkgname}-${pkgver}/Cargo.toml"
+    #ln -sf "../${pkgname}-${pkgver}.Cargo.lock" "${pkgname}-${pkgver}/Cargo.lock"
+    rm ${pkgname}-${pkgver}.Cargo.lock
+    cargo fetch --manifest-path="${pkgname}-${pkgver}/Cargo.toml"
 }
 
 build() {

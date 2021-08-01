@@ -38,8 +38,11 @@ prepare() {
 
 build() {
   cd gitaly-$_tag
-
-  bundle-2.7 config force_ruby_platform true # build from sources as some prebuilt gems are not available for newer ruby
+  export GOPROXY=https://goproxy.io
+#export http_proxy=10.40.25.25:2014
+#export https_proxy=10.40.25.25:2014
+#bundle-2.7 config force_ruby_platform true # build from sources as some prebuilt gems are not available for newer ruby
+#proxychains -q make BUILD_TAGS="tracer_static tracer_static_jaeger" #|| \
   make BUILD_TAGS="tracer_static tracer_static_jaeger"
 }
 

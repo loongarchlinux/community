@@ -2,8 +2,8 @@
 
 _hkgname=clash-lib
 pkgname=haskell-clash-lib
-pkgver=1.4.3
-pkgrel=47
+pkgver=1.4.7
+pkgrel=2
 pkgdesc="Clash: a functional hardware description language - As a library"
 url="https://clash-lang.org/"
 license=("BSD")
@@ -21,7 +21,12 @@ depends=('ghc-libs' 'haskell-aeson' 'haskell-aeson-pretty' 'haskell-ansi-termina
 makedepends=('ghc' 'uusi' 'haskell-ghc-typelits-knownnat' 'haskell-quickcheck-text' 'haskell-src-exts'
              'haskell-tasty' 'haskell-tasty-hunit' 'haskell-tasty-quickcheck')
 source=("https://hackage.haskell.org/packages/archive/$_hkgname/$pkgver/$_hkgname-$pkgver.tar.gz")
-sha512sums=('2e344cfbb8f02db3498f8db9c921c42e3101b188edbc30e2a23231eb2f81473b89a69f7c779b63f0d715ae046cae43103d650883a39e99b31e70a6d7d56bceca')
+sha512sums=('587ab6f6d11289bbf0d3ad7da9b425316758e0c093186638afe8fe562af7534c679b654274670b854e0c2a8ae444992ac3d65d791c2cb94c48cec3ea3c730416')
+
+prepare() {
+  cd $_hkgname-$pkgver
+  uusi -u ghc-bignum $_hkgname.cabal
+}
 
 build() {
   cd $_hkgname-$pkgver

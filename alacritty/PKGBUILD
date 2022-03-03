@@ -5,8 +5,8 @@
 # Contributor: quininer <quininer@live.com>
 pkgname='alacritty'
 pkgdesc="A cross-platform, GPU-accelerated terminal emulator"
-pkgver=0.9.0
-pkgrel=3
+pkgver=0.10.1
+pkgrel=1
 arch=('loongarch64' 'x86_64')
 url="https://github.com/alacritty/alacritty"
 license=('Apache')
@@ -15,7 +15,8 @@ depends=('freetype2' 'fontconfig' 'libxi' 'libxcursor' 'libxrandr')
 checkdepends=('ttf-dejavu') # for monospace fontconfig test
 optdepends=('ncurses: for alacritty terminfo database')
 source=("git+$url.git#tag=v${pkgver}?signed")
-validpgpkeys=('4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4') # Christian Dürr
+validpgpkeys=('4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4'  # Christian Dürr <contact@christianduerr.com>
+              'A56EF308A9F1256C25ACA3807EA8F8B94622A6A9') # Kirill Chibisov <contact@kchibisov.com>
 sha256sums=('SKIP')
 
 prepare() {
@@ -30,12 +31,12 @@ prepare() {
 
 build(){
   cd "$pkgname"
-  env CARGO_INCREMENTAL=0 cargo build --release --locked
+  env CARGO_INCREMENTAL=0 cargo build --release --locked --offline
 }
 
 check(){
   cd "$pkgname"
-  env CARGO_INCREMENTAL=0 cargo test --locked
+  env CARGO_INCREMENTAL=0 cargo test --locked --offline
 }
 
 package() {
@@ -43,6 +44,7 @@ package() {
   desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "extra/linux/Alacritty.desktop"
   install -D -m755 "target/release/alacritty" "$pkgdir/usr/bin/alacritty"
   install -D -m644 "extra/alacritty.man" "$pkgdir/usr/share/man/man1/alacritty.1"
+  install -D -m644 "extra/alacritty-msg.man" "$pkgdir/usr/share/man/man1/alacritty-msg.1"
   install -D -m644 "extra/linux/io.alacritty.Alacritty.appdata.xml" "$pkgdir/usr/share/appdata/io.alacritty.Alacritty.appdata.xml"
   install -D -m644 "alacritty.yml" "$pkgdir/usr/share/doc/alacritty/example/alacritty.yml"
   install -D -m644 "extra/completions/alacritty.bash" "$pkgdir/usr/share/bash-completion/completions/alacritty"

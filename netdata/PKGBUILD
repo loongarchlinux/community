@@ -2,8 +2,8 @@
 # Contributor: SanskritFritz (gmail)
 
 pkgname=netdata
-pkgver=1.32.1
-pkgrel=2
+pkgver=1.33.1
+pkgrel=1
 pkgdesc="Real-time performance monitoring, in the greatest possible detail, over the web"
 url="https://github.com/netdata/netdata"
 arch=('loongarch64' 'x86_64')
@@ -25,9 +25,9 @@ optdepends=('nodejs: for monitoring named and SNMP devices'
             'cups: for CUPS plugin'
             'iw: for monitoring Linux as access point')
 install=$pkgname.install
-source=("$pkgname-$pkgver.tar.gz::https://github.com/netdata/netdata/releases/download/${pkgver}/netdata-v${pkgver}.tar.gz"
+source=("$pkgname-$pkgver.tar.gz::https://github.com/netdata/netdata/releases/download/v$pkgver/netdata-v$pkgver.tar.gz"
         "$pkgname.sysusers")
-sha512sums=('869829eadcec4dd9c05cc6b6279830691b6cf9345cdcc0834e90d71f3bbee508c658d16bd379c51ce470c4e735e7c8d607dc045f45a60da2aa3dac36f37b5757'
+sha512sums=('f6586426bd0fe1ac3d903ec279b27177b1d232f5ca1fc28b01f052a5f2f57846d2d6369c9d5a1872fb97e31f86f1f7a11c600beda590447f9ca30c93e7ac262c'
             'a910809a823ba58ca7bdaa72e8d68427b48f452c1fbb2343fa182ecb0a091a7640e73af24b8ba2fdd90e00aed8ef53b7fccd25cb8f04ca9b9fa6c8e52223ca66')
 
 build() {

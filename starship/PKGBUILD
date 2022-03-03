@@ -4,8 +4,9 @@
 
 pkgname=starship
 pkgdesc='The cross-shell prompt for astronauts'
-pkgver=1.1.1
-pkgrel=1
+_tag=e6a921b5b2a54ffd81368f9b3a573e49b5af1c9a
+pkgver=1.3.0
+pkgrel=2
 arch=(loongarch64 x86_64)
 url=https://starship.rs/
 license=(ISC)
@@ -21,7 +22,6 @@ makedepends=(
   rust
 )
 checkdepends=(python)
-_tag=9a4b2bb536761e5aa9e0d5972e3052cc6d30c6d9
 source=(git+https://github.com/starship/starship.git#tag=${_tag})
 b2sums=('SKIP')
 
@@ -42,14 +42,12 @@ build() {
   cargo build \
     --release \
     --frozen \
-    --features notify-rust \
     --manifest-path starship/Cargo.toml
 }
 
 check() {
   cargo test \
     --frozen \
-    --features notify-rust \
     --manifest-path starship/Cargo.toml
 }
 

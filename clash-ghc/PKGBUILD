@@ -1,8 +1,8 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=clash-ghc
-pkgver=1.4.3
-pkgrel=49
+pkgver=1.4.7
+pkgrel=2
 pkgdesc="CAES Language for Synchronous Hardware"
 url="https://clash-lang.org/"
 license=("BSD")
@@ -12,10 +12,15 @@ depends=('ghc-libs' 'haskell-bifunctors' 'haskell-clash-lib' 'haskell-clash-prel
          'haskell-ghc-typelits-knownnat' 'haskell-ghc-typelits-natnormalise' 'haskell-hashable'
          'haskell-lens' 'haskell-primitive' 'haskell-reflection' 'haskell-split' 'haskell-uniplate'
          'haskell-unordered-containers' 'haskell-utf8-string' 'haskell-vector')
-makedepends=('ghc')
+makedepends=('ghc' 'uusi')
 conflicts=('clash')
 source=("https://hackage.haskell.org/packages/archive/$pkgname/$pkgver/$pkgname-$pkgver.tar.gz")
-sha512sums=('1805df7a57ec2b9f291f0561a35e55d776dab67717afb10293e0c29aa7607433b7f1fee30172450f93d3d6fc795b6245648b1241f6c46c79242cd0c6e2d14d4f')
+sha512sums=('f8f0cee5f465583627d098d7eef1e57dcbd86134b1b70cd89f804cba6a1da63a4e1d01b8b360a3ae81758ee884daa0950d6e5d6b16ac2f5e53f9eeb7d0b1c306')
+
+prepare() {
+  cd $pkgname-$pkgver
+  uusi -u ghc-bignum $pkgname.cabal
+}
 
 build() {
   cd $pkgname-$pkgver

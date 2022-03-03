@@ -2,7 +2,7 @@
 
 pkgname=gala
 pkgver=6.3.0
-pkgrel=1
+pkgrel=3
 pkgdesc='The Pantheon Window Manager'
 arch=(loongarch64 x86_64)
 url=https://github.com/elementary/gala
@@ -17,6 +17,7 @@ depends=(
   gnome-desktop
   gtk3
   json-glib
+  libcanberra
   libdrm
   libgee
   libgexiv2
@@ -51,6 +52,7 @@ b2sums=(SKIP)
 
 prepare() {
   cd gala
+  git cherry-pick -n cc83db8fe398feae9f3e4caa8352b65f0c8c96d4
 }
 
 pkgver() {

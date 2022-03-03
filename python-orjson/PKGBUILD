@@ -2,8 +2,8 @@
 
 _name=orjson
 pkgname=python-orjson
-pkgver=3.6.5
-pkgrel=2
+pkgver=3.6.7
+pkgrel=1
 pkgdesc="Fast, correct Python JSON library supporting dataclasses and datetimes"
 arch=(loongarch64 x86_64)
 url="https://github.com/ijl/orjson"
@@ -13,21 +13,17 @@ makedepends=(maturin python-pip rust)
 checkdepends=(python-arrow python-pendulum python-psutil python-pytest
 python-pytz python-xxhash)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/ijl/${_name}/archive/${pkgver}.tar.gz")
-sha512sums=('5a379bd58231d56a3abcf4499db17bff3e5e7708fe7c6bd1c8c943ffcc432874804ffe3f2fd24f83d27ff7ae00ff4d8b715389a92f30c61025460c9ddc77e9ac')
-b2sums=('ba2033be5f3e68d4d301f6da7a7827f80ace596a64721c5d719c8a872f42c6c70164e1e83a119313a81d846285be65f3db26659b6a03f537a6b2eded4aa83f90')
-
-prepare() {
-  mv -v "${_name}-${pkgver}" "$pkgname-$pkgver"
-}
+sha512sums=('5fd7d354f19a01a72218bca4bb7d767ebb73cc79398c5e32c482fed65a93d9f98d58835ebaa0c5e85a975e5eb29d2522a1051bad8f03de8bc227dc2838b8a72b')
+b2sums=('2d666885420745d1e783b1d2795bd9814530447818e14f7ea4203a225849869a30962da9a377a86af1f012e3119b9377a723ebf08cf61127b5e50bd3125bdc4a')
 
 build() {
-  cd "$pkgname-$pkgver"
+  cd "${_name}-${pkgver}"
   maturin build --no-sdist --release --strip
 }
 
 check() {
   local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-  cd "$pkgname-$pkgver"
+  cd "${_name}-${pkgver}"
   mkdir -vp testdir
 
   PIP_CONFIG_FILE=/dev/null pip install --isolated --root="testdir" --ignore-installed --no-deps target/wheels/*.whl
@@ -35,7 +31,7 @@ check() {
 }
 
 package() {
-  cd "$pkgname-$pkgver"
+  cd "${_name}-${pkgver}"
   PIP_CONFIG_FILE=/dev/null pip install --isolated --root="$pkgdir" --ignore-installed --no-deps target/wheels/*.whl
   install -vDm 644 {CHANGELOG,README}.md -t "${pkgdir}/usr/share/doc/${pkgname}"
   install -vDm 644 LICENSE-* -t "${pkgdir}/usr/share/licenses/${pkgname}"

@@ -3,8 +3,8 @@
 # Contributor: Vlad Frolov <frolvlad@gmail.com>
 
 pkgname=cargo-deny
-pkgver=0.11.3
-pkgrel=2
+pkgver=0.12.1
+pkgrel=1
 pkgdesc='Cargo plugin for linting your dependencies'
 arch=('loongarch64' 'x86_64')
 url='https://github.com/EmbarkStudios/cargo-deny'
@@ -13,7 +13,7 @@ depends=('gcc-libs' 'zlib')
 makedepends=('cargo')
 options=(!lto)
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/EmbarkStudios/cargo-deny/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz)
-b2sums=('d0f2514a46303371a69ea953ec6214a1ce5d918df256f18b81c66184b49073db16fdec85856cfa7d2e2cb3db68f7e241db82faff866748f8e762dc7d23882a04')
+b2sums=('fc139b7816dc3eac3954dab165be71e53a29b0a2a6a284f67df59ef21349ddde2a5d1931399e1f441674ff8108f783a22ac863c1765f310666aa52af43815230')
 
 prepare() {
   cd cargo-deny-${pkgver}

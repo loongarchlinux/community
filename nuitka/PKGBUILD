@@ -3,7 +3,7 @@
 # Contributor: Panagiotis Mavrogiorgos <pmav99@gmail.com>
 
 pkgname=nuitka
-pkgver=0.7
+pkgver=0.8
 pkgrel=1
 pkgdesc='Python compiler with full language support and CPython compatibility'
 arch=(any)
@@ -16,13 +16,12 @@ optdepends=('ccache: for build caching'
             'chrpath: for building standalone executables'
             'pyside2: for using Qt5 APIs')
 source=("https://files.pythonhosted.org/packages/source/N/${pkgname^}/${pkgname^}-${pkgver}.tar.gz")
-sha512sums=('c097cbb1677caa7ab31f0a4542b57ac110f443a84a7feb44b6e6939599dcbd75e29fb5288861627aee7af6d5ddd2153ea9a8030fc3e9ec2c04b5b34195447925')
-b2sums=('265aa830d2230c052a51dd6774f6382ed5fe581a29cf00cbff2b23e6b3e2bb5c49bab35e96584ab519b668fb3ef3a84d3285cd85e561c24bee3afe9ebc78f261')
+b2sums=('314d730bcb92d0cd5d979b2d91e59eef605dfe27a30c959753f803346f919872cc13d0bcc71803a3425fd73c3fcfe292852b79a390a9d7a373a8433895fbbef6')
 
 prepare() {
   cd ${pkgname^}-$pkgver
   # in our build environment /etc/os-release will not exist, but /usr/lib/os-release will
-  sed -e 's|/etc/os-release|/usr/lib/os-release|' -i nuitka/utils/Utils.py
+  sed -e 's,/etc/os-release,/usr/lib/os-release,' -i nuitka/utils/Utils.py
 }
 
 build() {

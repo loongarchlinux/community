@@ -3,7 +3,7 @@
 
 pkgname=grim
 pkgver=1.4.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Screenshot utility for Wayland'
 arch=(loongarch64 x86_64)
 url='https://github.com/emersion/grim'

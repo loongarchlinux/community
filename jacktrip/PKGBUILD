@@ -1,7 +1,7 @@
 # Maintainer: David Runge <dvzrv@archlinux.org>
 
 pkgname=jacktrip
-pkgver=1.5.1
+pkgver=1.5.3
 pkgrel=1
 pkgdesc="Multi-machine audio network performance over the Internet"
 arch=(loongarch64 x86_64)
@@ -10,12 +10,13 @@ license=(LGPL3 GPL3 MIT)
 groups=(pro-audio)
 depends=(gcc-libs glibc hicolor-icon-theme qt5-base)
 makedepends=(help2man meson jack python-jinja python-yaml)
-source=("${pkgname}-${pkgver}.tar.gz::https://github.com/${pkgname}/${pkgname}/archive/v${pkgver}.tar.gz")
-sha512sums=('12f6ede3ad16bf8476bc9b2da3d2648b158ddbe665577f8c65d9cd134258fa1ee3d7680bb9913f77532a0c451a69cc1945373f64d759ac5a48b1f5af5e9c608b')
-b2sums=('415318fbfcafe595e3a2e5ace3499c6fd665f85b23f324f31b8e9ac20089b2107fac4d7658afdd85b59b59cd79b2069b133f4d44462fc1a9dcceb16ed23b55b1')
+options=(debug)
+source=($pkgname-$pkgver.tar.gz::https://github.com/$pkgname/$pkgname/archive/v$pkgver.tar.gz)
+sha512sums=('ab8faabfaf5aefcc035d19e8a00480f84be5a83b8330966d762029ed9187f3710968679c518d4cf7f6b372b4b4e7da53c3184654dc3648e3e75589adab8bd520')
+b2sums=('59cf75f55a7396c045ac6866d260ef4d28b5ff87cfc74b2d18a6674ad334c03a65859a611280d2401071823e9a35c2ece1b695629943cb1b94fcbd9c96376df8')
 
 build() {
-  arch-meson -Drtaudio=disabled build "${pkgname}-${pkgver}"
+  arch-meson -Drtaudio=disabled build $pkgname-$pkgver
   ninja -C build
 }
 
@@ -25,7 +26,7 @@ check() {
 package() {
   depends+=(libjack.so)
 
-  DESTDIR="${pkgdir}" meson install -C build
-  install -vDm 644 "${pkgname}-${pkgver}/"{LICENSE.md,LICENSES/MIT.txt} -t "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -vDm 644 "${pkgname}-${pkgver}/README.md" -t "${pkgdir}/usr/share/doc/${pkgname}"
+  DESTDIR="$pkgdir" meson install -C build
+  install -vDm 644 $pkgname-$pkgver/{LICENSE.md,LICENSES/MIT.txt} -t "$pkgdir/usr/share/licenses/$pkgname"
+  install -vDm 644 $pkgname-$pkgver/README.md -t "$pkgdir/usr/share/doc/$pkgname"
 }

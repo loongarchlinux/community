@@ -2,7 +2,7 @@
 
 pkgname=npm-check-updates
 pkgdesc='Find newer versions of dependencies than what your package.json or bower.json allows'
-pkgver=12.4.0
+pkgver=13.0.3
 pkgrel=1
 arch=('any')
 url='https://github.com/tjunnone/npm-check-updates'
@@ -10,7 +10,7 @@ license=('Apache')
 depends=('nodejs-nopt' 'npm' 'semver')
 source=(https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz)
 noextract=($pkgname-$pkgver.tgz)
-sha512sums=('5f5e07ef833c4951644ad98fd4d0ce321d0e8cb077994d9dc1478cef5cf2213247926d3c3004b0c13732756e98b8670d5b5454955ab5710636c968a3bf8cca51')
+sha512sums=('6bc0959252635d98663792aea7caca89e8c0ae86c26ce68c9ee6e1bccfcb91856e98ed7b741b96b9a1d4ba24ab62095051bf3c94649d6cd35f1c334dedbfb7a5')
 
 package() {
   npm install -g --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz

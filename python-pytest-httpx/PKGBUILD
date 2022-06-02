@@ -1,7 +1,7 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=python-pytest-httpx
-pkgver=0.17.1
+pkgver=0.17.3
 pkgrel=1
 pkgdesc='Send responses to httpx'
 arch=('any')
@@ -11,7 +11,7 @@ depends=('python-httpx' 'python-pytest')
 makedepends=('python-setuptools')
 checkdepends=('python-pytest-asyncio')
 source=("https://github.com/Colin-b/pytest_httpx/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
-sha512sums=('8fa9447bf50f9bf46ad781abbf9e5d46609e2796a6ec26d39b15c1cda99fc936af6b540c27f9cbe4f40948f041ceedd074c312815fe5ea6b023da20112c83f69')
+sha512sums=('b3c2dc8c5015f44a511659b51843cb9cf8ada163ebd7fe4ccb50438d6e191fdc84bb84f38fcd0c27dbfe0592314da0df8d319caecad32f37e3a30de40b496299')
 
 build() {
   cd pytest_httpx-$pkgver

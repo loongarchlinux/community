@@ -6,8 +6,8 @@
 # Contributor: stef204 <https://aur.archlinux.org/account/stef204>
 
 pkgname=borgmatic
-pkgver=1.5.23
-pkgrel=1
+pkgver=1.6.2
+pkgrel=2
 pkgdesc='Simple, configuration-driven backup software for servers and workstations'
 arch=('any')
 url=https://torsion.org/borgmatic
@@ -17,8 +17,8 @@ depends=('borg' 'python-colorama' 'python-jsonschema' 'python-requests'
 checkdepends=('python-flexmock' 'python-pytest')
 optdepends=('python-llfuse: for mount action')
 source=("https://files.pythonhosted.org/packages/source/${pkgname::1}/$pkgname/$pkgname-$pkgver.tar.gz")
-sha256sums=('a41277231dc097da93c4a2f4e1fc9be45674d7b715c351008362b0a0904fff42')
-b2sums=('9924d9df1cae7e4f97ff70eb16f84a2ee8a0fe0cd3a08add7a7ec59d269fb693f74350cdb45633fc4d76816614216a69a205504cac9c7608a635fc364253add6')
+sha256sums=('74329aa66380d4d85b99ed0b5d5a8d70d0e640c0eb7aee83a1e955648a447be6')
+b2sums=('625ce664291ab4e887ec4c7871d8339e0b110329469f9752fc76a8217bddfb0dc8cf6f91133d6ee9998bababe171b4f48158a4cac2bf2cc9be6dfb7d2903654e')
 
 prepare() {
   cd $pkgname-$pkgver
@@ -42,6 +42,9 @@ package() {
   cd $pkgname-$pkgver
   python setup.py install --root="$pkgdir" --optimize=1 --skip-build
   install -Dm644 -t "$pkgdir"/usr/lib/systemd/system sample/systemd/*
+  install -d "$pkgdir"/usr/share/bash-completion/completions
+  ./test-env/bin/borgmatic --bash-completion > \
+    "$pkgdir"/usr/share/bash-completion/completions/$pkgname
 }
 
 # vim: ts=2 sw=2 et:

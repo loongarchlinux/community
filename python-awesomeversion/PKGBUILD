@@ -3,7 +3,7 @@
 
 pkgname=python-awesomeversion
 _name=${pkgname#python-}
-pkgver=22.2.0
+pkgver=22.5.1
 pkgrel=1
 pkgdesc="One version package to rule them all."
 arch=('any')
@@ -13,13 +13,12 @@ depends=(python)
 makedepends=(python-build python-installer python-poetry)
 checkdepends=('python-pytest')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/ludeeus/$_name/archive/refs/tags/$pkgver.tar.gz")
-sha512sums=('ea371000e9c54bd53bf809f7eb9e2b09779c689c3b8a85820caac291b97feb933e5d9fbf384df576267b66e13ec8a1af422d7abdeab4cdfe1be00b88b9474dfe')
+sha512sums=('5b07f1b82822fde827dfec7ee8a19a1557fa054b166045cfd1b5c0d2a2fc32809a72699018f18443fc216e7580829271f3383ad653ba80eb45b3184bcbfc052e')
 
 prepare() {
     cd $_name-$pkgver
     # version = "0"
     sed -e "s|version = \"0\"|version = \"$pkgver\"|" -i pyproject.toml
-    cat pyproject.toml
 }
 
 check() {

@@ -2,16 +2,16 @@
 # Contributor: Alkindi42
 
 pkgname=sqlc
-pkgver=1.12.0
-pkgrel=1
-pkgdesc="Compile SQL to type-safe Go"
+pkgver=1.13.0
+pkgrel=2
+pkgdesc='Compile SQL to type-safe Go'
 arch=('loongarch64' 'x86_64')
-url="https://sqlc.dev"
+url='https://sqlc.dev'
 license=('MIT')
 depends=('glibc')
 makedepends=('git' 'go')
 options=('!lto')
-_commit='45bd150197805787cdf10e67222c28113f3c627f'
+_commit='e7aa4bd581b1c24f27b61dbed8018f4f7af5d3fc'
 source=("$pkgname::git+https://github.com/kyleconroy/sqlc.git#commit=$_commit")
 b2sums=('SKIP')
 

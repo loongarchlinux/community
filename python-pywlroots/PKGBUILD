@@ -2,7 +2,7 @@
 
 _name=pywlroots
 pkgname=python-pywlroots
-pkgver=0.15.10
+pkgver=0.15.14
 pkgrel=1
 pkgdesc="Python binding to the wlroots library using cffi"
 arch=(loongarch64 x86_64)
@@ -10,33 +10,34 @@ url="https://github.com/flacjacket/pywlroots"
 license=(custom:UIUC)
 depends=(glibc python-cffi python-pywayland python-xkbcommon wlroots
 libwlroots.so)
-makedepends=(python-setuptools)
+makedepends=(python-build python-installer python-setuptools python-wheel)
 checkdepends=(python-pytest)
 provides=(pywlroots)
 conflicts=(pywlroots)
 replaces=(pywlroots)
 options=(debug)
 source=(https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz)
-sha512sums=('4b1bc251980095c6a4db0b0a78314c9603200712dca7c08b45b3e2bb4439bd60d9f5d3e14b813de1188f6f36a2756edffe73be0dbe0fcb0bf9a2128298e3ed70')
-b2sums=('7e741ac2a37bcf292bef56d29c9e1a5ab157ea25f148cb19563900b7b9af94596749c92a7adb2d384b9f47994452f6b1cd541c05a22a4f025c19efdf7d663372')
+sha512sums=('9fc2dc8f51e48b6a1b0a5fcdc6b3f01f411bc44275c67ed88ee358fddba4627614ea73e150e8c01345ea74dba7e3f584f453e5fd2162e28f24c7a27ed11d38eb')
+b2sums=('8227056b1ad6ebbf37d07a1a7fca1720741aa203105e933cce708b716c515777b7d4ce8d6f960870d42b44c30d8e56574917546061b20212025099d462d6572b')
 
 build() {
   cd $_name-$pkgver
   python wlroots/ffi_build.py
-  python setup.py build
+  python -m build --wheel --no-isolation
 }
 
 check() {
-  local _py_ver=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+  local _site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
 
   cd $_name-$pkgver
-  export PYTHONPATH="build/lib.linux-$CARCH-$_py_ver:$PYTHONPATH"
-  pytest -v
+  python -m installer --destdir=test_dir dist/*.whl
+  export PYTHONPATH="test_dir/$_site_packages:$PYTHONPATH"
+  pytest -vv
 }
 
 package() {
   cd $_name-$pkgver
-  python setup.py install --optimize=1 --root="$pkgdir"
+  python -m installer --destdir="$pkgdir" dist/*.whl
   install -vDm 644 README.rst -t "$pkgdir/usr/share/doc/$pkgname"
   install -vDm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname"
 }

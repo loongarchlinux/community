@@ -20,16 +20,16 @@ makedepends=('python' 'procps-ng')
 optdepends=('npm: nodejs package manager')
 source=("https://github.com/nodejs/node/archive/v$pkgver/nodejs-$pkgver.tar.gz"
     nodejs-gcc12-build.patch)
-sha512sums=('3ea2d0c3bf5d9d6de74692f8b23109cefddd3c7f3cc56ceddb4b6c0f686d480c037abeec7dfd32923f869ba7bfca9a3709124d492d20cc8f9a5d3210876eab91'
+sha512sums=('d8793aec2fba3d4e2747557c1a457c33c37f1e7ee86988c0e22ec844b254675c39ccaad9908fb63f7814fe759d94d85f18460e74b368d6e75b545f52462891ca'
             '8092d4f36bc098874dee25c3f00a1dfede4989fe640d014e551faff44ede5e5766c643dc26ebe302640ced4f78fb784f816e9fce77888e4e126a186287084dcb')
 
 prepare() {
-	cd "node-$pkgver"
+	cd "node-v$pkgver"
 	patch -p1 -i "$srcdir/nodejs-gcc12-build.patch"
 }
 
 build() {
-  cd node-$pkgver
+  cd node-v$pkgver
 
   ./configure \
     --prefix=/usr \
@@ -49,12 +49,12 @@ build() {
 }
 
 check() {
-  cd node-$pkgver
+  cd node-v$pkgver
   make test || :
 }
 
 package() {
-  cd node-$pkgver
+  cd node-v$pkgver
 
   make DESTDIR="$pkgdir" install
 

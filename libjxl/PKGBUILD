@@ -31,15 +31,15 @@ sha256sums=('SKIP'
             'SKIP')
 
 prepare() {
-    proxychains -q git -C libjxl submodule init
-    proxychains -q git -C libjxl config --local submodule.third_party/brotli.url "${srcdir}/brotli"
-    proxychains -q git -C libjxl config --local submodule.third_party/lodepng.url "${srcdir}/lodepng"
-    proxychains -q git -C libjxl config --local submodule.third_party/lcms.url "${srcdir}/Little-CMS"
-    proxychains -q git -C libjxl config --local submodule.third_party/googletest.url "${srcdir}/googletest"
-    proxychains -q git -C libjxl config --local submodule.third_party/sjpeg.url "${srcdir}/sjpeg"
-    proxychains -q git -C libjxl config --local submodule.third_party/skcms.url "${srcdir}/skcms"
-    proxychains -q git -C libjxl config --local submodule.third_party/highway.url "${srcdir}/highway"
-    proxychains -q git -C libjxl submodule update
+    git -C libjxl submodule init
+    git -C libjxl config --local submodule.third_party/brotli.url "${srcdir}/brotli"
+    git -C libjxl config --local submodule.third_party/lodepng.url "${srcdir}/lodepng"
+    git -C libjxl config --local submodule.third_party/lcms.url "${srcdir}/Little-CMS"
+    git -C libjxl config --local submodule.third_party/googletest.url "${srcdir}/googletest"
+    git -C libjxl config --local submodule.third_party/sjpeg.url "${srcdir}/sjpeg"
+    git -C libjxl config --local submodule.third_party/skcms.url "${srcdir}/skcms"
+    git -C libjxl config --local submodule.third_party/highway.url "${srcdir}/highway"
+    git -C libjxl submodule update
 }
 
 build() {
@@ -47,6 +47,8 @@ build() {
     export CXX='clang++'
     export CFLAGS+=' -DNDEBUG'
     export CXXFLAGS+=' -DNDEBUG'
+  CFLAGS=${CFLAGS/-fstack-clash-protection/}
+  CXXFLAGS=${CXXFLAGS/-fstack-clash-protection/}
     cmake -B build -S libjxl \
         -DCMAKE_BUILD_TYPE:STRING='None' \
         -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
@@ -74,7 +76,7 @@ package_libjxl() {
     provides=('libjxl.so' 'libjxl_threads.so')
     
     make -C build DESTDIR="$pkgdir" install
-    install -D -m755 build/tools/libjxl_jni.so -t "${pkgdir}/usr/lib"
+#install -D -m755 build/tools/libjxl_jni.so -t "${pkgdir}/usr/lib"
     install -D -m644 libjxl/{LICENSE,PATENTS} -t "${pkgdir}/usr/share/licenses/${pkgname}"
 }
 

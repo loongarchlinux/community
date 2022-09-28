@@ -16,13 +16,19 @@ sha256sums=('d700c6cc93d06c5ed7a887f51d87d47e88e783dfc1b28d00b951625c4d3ce509'
 
 prepare() {
     #ln -sf "../${pkgname}-${pkgver}.Cargo.lock" "${pkgname}-${pkgver}/Cargo.lock"
+    find -name Cargo.lock -exec rm -f {} \;
+    mkdir .cargo
+    cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
     rm ${pkgname}-${pkgver}.Cargo.lock
     cargo fetch --manifest-path="${pkgname}-${pkgver}/Cargo.toml"
 }
 
 build() {
     export CFLAGS+=' -ffat-lto-objects'
-    cargo build --release --frozen --manifest-path="${pkgname}-${pkgver}/Cargo.toml"
+    cargo build --release --manifest-path="${pkgname}-${pkgver}/Cargo.toml"
 }
 
 check() {

@@ -55,35 +55,20 @@ prepare() {
   # fix version identifier if not built from a module
   patch -Np1 < "${srcdir}/override-main-module-version.patch"
   sed 's|"unknown"|"v'"${pkgver}"'"|g' -i caddy.go
-#  cd $srcdir
-#  if [ ! -d sys ]; then
-#  git clone https://github.com/golang/sys.git
-#    fi
-#  if [ ! -d net ]; then
-#  git clone https://github.com/golang/net.git
-#    fi
 }
 
 build() {
-  set -x
-  export http_proxy=10.40.25.25:2014
-  export https_proxy=10.40.25.25:2014
-  cd "${srcdir}/${pkgname}"
-  export GOPATH="$srcdir/build:/usr/share/gocode"
-#go mod edit -replace=golang.org/x/sys @v0.0.0-20210915083310-ed5796bab164=$srcdir/sys
-  go mod download golang.org/x/net
-#go mod edit -replace=golang.org/x/sys=github.com/golang/sys@v0.0.0-20220622161953-175b2fd9d664
-#go mod edit -replace=golang.org/x/net=github.com/golang/net@v0.0.0-20220622184535-263ec571b305
-  go mod edit -replace=golang.org/x/sys=github.com/golang/sys@master
-  go mod tidy
-#go mod edit -replace=golang.org/x/net=github.com/golang/net@master
-  cd "$srcdir"
   cd "${pkgname}/cmd/caddy/"
   export CGO_LDFLAGS="${LDFLAGS}"
   export CGO_CPPFLAGS="${CPPFLAGS}"
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CXXFLAGS="${CXXFLAGS}"
   export GOFLAGS="-trimpath -ldflags=-linkmode=external -mod=readonly -modcacherw"
+  export GOPROXY=https://goproxy.cn
+  go mod edit -replace=golang.org/x/sys=github.com/golang/sys@v0.0.0-20220622161953-175b2fd9d664
+  go mod edit -replace=golang.org/x/net=github.com/golang/net@v0.0.0-20220622184535-263ec571b305
+  go mod edit -replace=go.etcd.io/bbolt=go.etcd.io/bbolt@master
+  go mod tidy
   go build .
 }
 

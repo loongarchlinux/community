@@ -11,17 +11,12 @@ makedepends=('go' 'git')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/v2fly/domain-list-community/archive/$pkgver.tar.gz")
 sha512sums=('f823de2a04c1e78e9405deb83095fb9192f793209f27fb45e18e6fb37be8565ba6d99aa0b934030493262945a96b227b1642df666416e1ff96aa6b630bf5f103')
 
-prepare() {
-  cd $srcdir
-  git clone https://github.com/golang/sys.git
-}
-
 build() {
   cd domain-list-community-$pkgver
-
-  export GOPATH="$srcdir/build:/usr/share/gocode"
-  go mod edit -replace=golang.org/x/sys@v0.0.0-20210903071746-97244b99971b=$srcdir/sys
-
+  export GOPROXY=https://goproxy.cn
+  go mod edit -replace=golang.org/x/sys=github.com/golang/sys@v0.0.0-20220622161953-175b2fd9d664
+  go mod edit -replace=golang.org/x/net=github.com/golang/net@v0.0.0-20220622184535-263ec571b305
+  go mod tidy
   ASSUME_NO_MOVING_GC_UNSAFE_RISK_IT_WITH=go1.18 go run main.go
 }
 

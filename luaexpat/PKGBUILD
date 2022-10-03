@@ -21,7 +21,7 @@ makedepends=(lua
              luarocks)
 options=(debug)
 _archive="$pkgbase-$pkgver"
-_rock="$_archive-$_rockrel.linux-$CARCH.rock"
+_rock="$_archive-$_rockrel.linux-`uname -m`.rock"
 _rockspec="$_archive-$_rockrel.rockspec"
 source=("$url/archive/$pkgver/$_archive.tar.gz")
 sha512sums=('0ac151148101d62f1358f5f310be57de5379891ceda76f0eb821a8b56d0d9c781feaf1db601d982339cd4837f9504b1f9b8b14ebf3a7245925473f6824bbc8b3')

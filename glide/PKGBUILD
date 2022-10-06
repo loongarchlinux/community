@@ -19,6 +19,12 @@ sha256sums=('e426e8b085a89e7dc384fc241bf161732735f083ddc4099342859c289951c6a3'
 
 prepare() {
   patch -d $pkgname-$pkgver -p1 < fix-build.patch
+  find -name Cargo.lock -exec rm -f {} \;
+  mkdir -p .cargo
+  cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
 }
 
 build() {

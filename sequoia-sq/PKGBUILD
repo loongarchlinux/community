@@ -23,8 +23,10 @@ validpgpkeys=(
 build() {
   cd sequoia/sq
   export CARGO_TARGET_DIR=../target
-  rm -f Carto.lock
-  cargo build --release --features 'crypto-nettle compression net autocrypt'
+  CARGO_REGISTRIES_MY_REGISTRY_INDEX="https://gitee.com/yetist/crates.io-index"
+  rm -f $srcdir/sequoia/Cargo.lock
+
+  cargo build -v --release --features 'crypto-nettle compression-bzip2 autocrypt'
 }
 
 check() {

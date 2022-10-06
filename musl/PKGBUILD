@@ -42,3 +42,9 @@ package() {
   install -Dm0644 README "$pkgdir"/usr/share/doc/musl/README
   install -Dm0644 COPYRIGHT "$pkgdir"/usr/share/licenses/musl/COPYRIGHT
 }
+sha256sums=('7d5b0b6062521e4627e099e4c9dc8248d32a30285e959b7eecaa780cf8cfd4a4'
+            'SKIP'
+            '76698c44ff8cabed6461827ba753fa75032f508e6787e0ef71f1c4b48e6ff725')
+sha256sums=('7d5b0b6062521e4627e099e4c9dc8248d32a30285e959b7eecaa780cf8cfd4a4'
+            'SKIP'
+            '4f52664d8d48479c5b377cb583b7287eb75a4157027022f48408f0eaa3e29d01')

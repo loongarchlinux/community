@@ -36,6 +36,6 @@ check() {
 }
 
 package() {
-    cargo install --frozen --offline --no-track --path "${pkgname}-${pkgver}" --root "${pkgdir}/usr"
+    cargo install --no-track --path "${pkgname}-${pkgver}" --root "${pkgdir}/usr"
     install -D -m644 "${pkgname}-${pkgver}/LICENSE" -t "${pkgdir}/usr/share/licenses/${pkgname}"
 }

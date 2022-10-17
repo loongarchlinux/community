@@ -44,6 +44,7 @@ package() {
   ln -s ../usr/lib/deepin/desktop-version "$pkgdir"/etc/deepin-version
 
   # Install os-version and rename to uos-version
+  cp files/os-version-amd files/os-version
   install -Dm644 files/os-version "$pkgdir"/etc/uos-version
 
   # Remove apt-specific templates

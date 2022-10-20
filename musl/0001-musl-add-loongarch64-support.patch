@@ -833,7 +833,7 @@ index 00000000..4d5e1885
 +
 +#define IPC_64  0
 diff --git a/configure b/configure
-index ca5cbc0b..bb4a50d1 100755
+index ca5cbc0b..68062071 100755
 --- a/configure
 +++ b/configure
 @@ -328,6 +328,7 @@ i?86*) ARCH=i386 ;;
@@ -844,6 +844,18 @@ index ca5cbc0b..bb4a50d1 100755
  m68k*) ARCH=m68k ;;
  mips64*|mipsisa64*) ARCH=mips64 ;;
  mips*) ARCH=mips ;;
+@@ -723,11 +724,6 @@ fi
+ test "$SUBARCH" \
+ && printf "configured for %s variant: %s\n" "$ARCH" "$ARCH$SUBARCH"
+ 
+-case "$ARCH$SUBARCH" in
+-arm) ASMSUBARCH=el ;;
+-*) ASMSUBARCH=$SUBARCH ;;
+-esac
+-
+ #
+ # Some archs (powerpc) have different possible long double formats
+ # that the compiler can be configured for. The logic for whether this
 diff --git a/crt/loongarch64/crti.s b/crt/loongarch64/crti.s
 new file mode 100644
 index 00000000..81c43e6e
@@ -966,6 +978,32 @@ index 86e2f0bb..1b0e9e71 100644
  #ifdef __cplusplus
  }
  #endif
+diff --git a/include/unistd.h b/include/unistd.h
+index 212263a7..80be3b26 100644
+--- a/include/unistd.h
++++ b/include/unistd.h
+@@ -467,6 +467,8 @@ pid_t gettid(void);
+ #define _CS_POSIX_V7_LPBIG_OFFBIG_LINTFLAGS	1147
+ #define _CS_V6_ENV	1148
+ #define _CS_V7_ENV	1149
++#define _CS_POSIX_V7_THREADS_CFLAGS	1150
++#define _CS_POSIX_V7_THREADS_LDFLAGS	1151
+ 
+ #ifdef __cplusplus
+ }
+diff --git a/src/conf/confstr.c b/src/conf/confstr.c
+index 02cb1aa2..3d417284 100644
+--- a/src/conf/confstr.c
++++ b/src/conf/confstr.c
+@@ -7,7 +7,7 @@ size_t confstr(int name, char *buf, size_t len)
+ 	const char *s = "";
+ 	if (!name) {
+ 		s = "/bin:/usr/bin";
+-	} else if ((name&~4U)!=1 && name-_CS_POSIX_V6_ILP32_OFF32_CFLAGS>33U) {
++	} else if ((name&~4U)!=1 && name-_CS_POSIX_V6_ILP32_OFF32_CFLAGS>35U) {
+ 		errno = EINVAL;
+ 		return 0;
+ 	}
 diff --git a/src/fenv/loongarch64/fenv.S b/src/fenv/loongarch64/fenv.S
 new file mode 100644
 index 00000000..aa012c97
@@ -1044,6 +1082,79 @@ index 00000000..aa012c97
 +	jr      $ra
 +
 +#endif
+diff --git a/src/include/sys/stat.h b/src/include/sys/stat.h
+new file mode 100644
+index 00000000..59339bee
+--- /dev/null
++++ b/src/include/sys/stat.h
+@@ -0,0 +1,9 @@
++#ifndef SYS_STAT_H
++#define SYS_STAT_H
++
++#include "../../../include/sys/stat.h"
++
++hidden int __fstat(int, struct stat *);
++hidden int __fstatat(int, const char *restrict, struct stat *restrict, int);
++
++#endif
+diff --git a/src/internal/syscall.h b/src/internal/syscall.h
+index d5f294d4..4f41e1dc 100644
+--- a/src/internal/syscall.h
++++ b/src/internal/syscall.h
+@@ -201,43 +201,43 @@ static inline long __alt_socketcall(int sys, int sock, int cp, long a, long b, l
+ #define SYS_sendfile SYS_sendfile64
+ #endif
+ 
+-#ifndef SYS_timer_settime
++#ifdef SYS_timer_settime32
+ #define SYS_timer_settime SYS_timer_settime32
+ #endif
+ 
+-#ifndef SYS_timer_gettime
++#ifdef SYS_timer_gettime32
+ #define SYS_timer_gettime SYS_timer_gettime32
+ #endif
+ 
+-#ifndef SYS_timerfd_settime
++#ifdef SYS_timerfd_settime32
+ #define SYS_timerfd_settime SYS_timerfd_settime32
+ #endif
+ 
+-#ifndef SYS_timerfd_gettime
++#ifdef SYS_timerfd_gettime32
+ #define SYS_timerfd_gettime SYS_timerfd_gettime32
+ #endif
+ 
+-#ifndef SYS_clock_settime
++#ifdef SYS_clock_settime32
+ #define SYS_clock_settime SYS_clock_settime32
+ #endif
+ 
+-#ifndef SYS_clock_gettime
++#ifdef SYS_clock_gettime32
+ #define SYS_clock_gettime SYS_clock_gettime32
+ #endif
+ 
+-#ifndef SYS_clock_getres
++#ifdef SYS_clock_getres_time32
+ #define SYS_clock_getres SYS_clock_getres_time32
+ #endif
+ 
+-#ifndef SYS_clock_nanosleep
++#ifdef SYS_clock_nanosleep_time32
+ #define SYS_clock_nanosleep SYS_clock_nanosleep_time32
+ #endif
+ 
+-#ifndef SYS_gettimeofday
++#ifdef SYS_gettimeofday_time32
+ #define SYS_gettimeofday SYS_gettimeofday_time32
+ #endif
+ 
+-#ifndef SYS_settimeofday
++#ifdef SYS_settimeofday_time32
+ #define SYS_settimeofday SYS_settimeofday_time32
+ #endif
+ 
 diff --git a/src/ldso/loongarch64/dlsym.s b/src/ldso/loongarch64/dlsym.s
 new file mode 100644
 index 00000000..edb8214c
@@ -1057,6 +1168,85 @@ index 00000000..edb8214c
 +	move	$a2, $ra
 +	la.global	$t0, __dlsym
 +	jr	$t0
+diff --git a/src/misc/getrlimit.c b/src/misc/getrlimit.c
+index 2ab2f0f4..bf676307 100644
+--- a/src/misc/getrlimit.c
++++ b/src/misc/getrlimit.c
+@@ -6,12 +6,13 @@
+ 
+ int getrlimit(int resource, struct rlimit *rlim)
+ {
+-	unsigned long k_rlim[2];
+ 	int ret = syscall(SYS_prlimit64, 0, resource, 0, rlim);
+ 	if (!ret) {
+ 		FIX(rlim->rlim_cur);
+ 		FIX(rlim->rlim_max);
+ 	}
++#ifdef SYS_getrlimit
++	unsigned long k_rlim[2];
+ 	if (!ret || errno != ENOSYS)
+ 		return ret;
+ 	if (syscall(SYS_getrlimit, resource, k_rlim) < 0)
+@@ -21,6 +22,9 @@ int getrlimit(int resource, struct rlimit *rlim)
+ 	FIX(rlim->rlim_cur);
+ 	FIX(rlim->rlim_max);
+ 	return 0;
++#else
++	return ret;
++#endif
+ }
+ 
+ weak_alias(getrlimit, getrlimit64);
+diff --git a/src/misc/setrlimit.c b/src/misc/setrlimit.c
+index 8340aee0..5b713cf3 100644
+--- a/src/misc/setrlimit.c
++++ b/src/misc/setrlimit.c
+@@ -12,12 +12,14 @@ struct ctx {
+ 	int err;
+ };
+ 
++#ifdef SYS_setrlimit
+ static void do_setrlimit(void *p)
+ {
+ 	struct ctx *c = p;
+ 	if (c->err>0) return;
+ 	c->err = -__syscall(SYS_setrlimit, c->res, c->lim);
+ }
++#endif
+ 
+ int setrlimit(int resource, const struct rlimit *rlim)
+ {
+@@ -29,6 +31,7 @@ int setrlimit(int resource, const struct rlimit *rlim)
+ 		rlim = &tmp;
+ 	}
+ 	int ret = __syscall(SYS_prlimit64, 0, resource, rlim, 0);
++#ifdef SYS_setrlimit
+ 	if (ret != -ENOSYS) return __syscall_ret(ret);
+ 
+ 	struct ctx c = {
+@@ -42,6 +45,9 @@ int setrlimit(int resource, const struct rlimit *rlim)
+ 		return -1;
+ 	}
+ 	return 0;
++#else
++	return __syscall_ret(ret);
++#endif
+ }
+ 
+ weak_alias(setrlimit, setrlimit64);
+diff --git a/src/network/netlink.h b/src/network/netlink.h
+index 38acb178..873fabe2 100644
+--- a/src/network/netlink.h
++++ b/src/network/netlink.h
+@@ -86,7 +86,7 @@ struct ifaddrmsg {
+ #define RTA_DATALEN(rta)	((rta)->rta_len-sizeof(struct rtattr))
+ #define RTA_DATAEND(rta)	((char*)(rta)+(rta)->rta_len)
+ #define RTA_NEXT(rta)		(struct rtattr*)((char*)(rta)+NETLINK_ALIGN((rta)->rta_len))
+-#define RTA_OK(nlh,end)		((char*)(end)-(char*)(rta) >= sizeof(struct rtattr))
++#define RTA_OK(rta,end)		((char*)(end)-(char*)(rta) >= sizeof(struct rtattr))
+ 
+ #define NLMSG_RTA(nlh,len)	((void*)((char*)(nlh)+sizeof(struct nlmsghdr)+NETLINK_ALIGN(len)))
+ #define NLMSG_RTAOK(rta,nlh)	RTA_OK(rta,NLMSG_DATAEND(nlh))
 diff --git a/src/setjmp/loongarch64/longjmp.S b/src/setjmp/loongarch64/longjmp.S
 new file mode 100644
 index 00000000..4186974f
@@ -1191,6 +1381,176 @@ index 00000000..abd96c62
 +1:
 +        la.global  $t8, setjmp
 +        jr         $t8
+diff --git a/src/stat/fchmodat.c b/src/stat/fchmodat.c
+index 4ee00b0a..bc581050 100644
+--- a/src/stat/fchmodat.c
++++ b/src/stat/fchmodat.c
+@@ -2,7 +2,6 @@
+ #include <fcntl.h>
+ #include <errno.h>
+ #include "syscall.h"
+-#include "kstat.h"
+ 
+ int fchmodat(int fd, const char *path, mode_t mode, int flag)
+ {
+@@ -11,12 +10,12 @@ int fchmodat(int fd, const char *path, mode_t mode, int flag)
+ 	if (flag != AT_SYMLINK_NOFOLLOW)
+ 		return __syscall_ret(-EINVAL);
+ 
+-	struct kstat st;
++	struct stat st;
+ 	int ret, fd2;
+ 	char proc[15+3*sizeof(int)];
+ 
+-	if ((ret = __syscall(SYS_fstatat, fd, path, &st, flag)))
+-		return __syscall_ret(ret);
++	if (fstatat(fd, path, &st, flag))
++		return -1;
+ 	if (S_ISLNK(st.st_mode))
+ 		return __syscall_ret(-EOPNOTSUPP);
+ 
+@@ -27,12 +26,12 @@ int fchmodat(int fd, const char *path, mode_t mode, int flag)
+ 	}
+ 
+ 	__procfdname(proc, fd2);
+-	ret = __syscall(SYS_fstatat, AT_FDCWD, proc, &st, 0);
++	ret = stat(proc, &st);
+ 	if (!ret) {
+-		if (S_ISLNK(st.st_mode)) ret = -EOPNOTSUPP;
+-		else ret = __syscall(SYS_fchmodat, AT_FDCWD, proc, mode);
++		if (S_ISLNK(st.st_mode)) ret = __syscall_ret(-EOPNOTSUPP);
++		else ret = syscall(SYS_fchmodat, AT_FDCWD, proc, mode);
+ 	}
+ 
+ 	__syscall(SYS_close, fd2);
+-	return __syscall_ret(ret);
++	return ret;
+ }
+diff --git a/src/stat/fstat.c b/src/stat/fstat.c
+index 9bbb46de..27db0ccb 100644
+--- a/src/stat/fstat.c
++++ b/src/stat/fstat.c
+@@ -4,12 +4,14 @@
+ #include <fcntl.h>
+ #include "syscall.h"
+ 
+-int fstat(int fd, struct stat *st)
++int __fstat(int fd, struct stat *st)
+ {
+ 	if (fd<0) return __syscall_ret(-EBADF);
+-	return fstatat(fd, "", st, AT_EMPTY_PATH);
++	return __fstatat(fd, "", st, AT_EMPTY_PATH);
+ }
+ 
++weak_alias(__fstat, fstat);
++
+ #if !_REDIR_TIME64
+ weak_alias(fstat, fstat64);
+ #endif
+diff --git a/src/stat/fstatat.c b/src/stat/fstatat.c
+index de165b5c..74c51cf5 100644
+--- a/src/stat/fstatat.c
++++ b/src/stat/fstatat.c
+@@ -6,7 +6,6 @@
+ #include <stdint.h>
+ #include <sys/sysmacros.h>
+ #include "syscall.h"
+-#include "kstat.h"
+ 
+ struct statx {
+ 	uint32_t stx_mask;
+@@ -69,6 +68,10 @@ static int fstatat_statx(int fd, const char *restrict path, struct stat *restric
+ 	return 0;
+ }
+ 
++#ifdef SYS_fstatat
++
++#include "kstat.h"
++
+ static int fstatat_kstat(int fd, const char *restrict path, struct stat *restrict st, int flag)
+ {
+ 	int ret;
+@@ -130,18 +133,25 @@ static int fstatat_kstat(int fd, const char *restrict path, struct stat *restric
+ 
+ 	return 0;
+ }
++#endif
+ 
+-int fstatat(int fd, const char *restrict path, struct stat *restrict st, int flag)
++int __fstatat(int fd, const char *restrict path, struct stat *restrict st, int flag)
+ {
+ 	int ret;
++#ifdef SYS_fstatat
+ 	if (sizeof((struct kstat){0}.st_atime_sec) < sizeof(time_t)) {
+ 		ret = fstatat_statx(fd, path, st, flag);
+ 		if (ret!=-ENOSYS) return __syscall_ret(ret);
+ 	}
+ 	ret = fstatat_kstat(fd, path, st, flag);
++#else
++	ret = fstatat_statx(fd, path, st, flag);
++#endif
+ 	return __syscall_ret(ret);
+ }
+ 
++weak_alias(__fstatat, fstatat);
++
+ #if !_REDIR_TIME64
+ weak_alias(fstatat, fstatat64);
+ #endif
+diff --git a/src/stdio/tempnam.c b/src/stdio/tempnam.c
+index 565df6b6..0c65b1f0 100644
+--- a/src/stdio/tempnam.c
++++ b/src/stdio/tempnam.c
+@@ -6,7 +6,6 @@
+ #include <string.h>
+ #include <stdlib.h>
+ #include "syscall.h"
+-#include "kstat.h"
+ 
+ #define MAXTRIES 100
+ 
+@@ -37,11 +36,10 @@ char *tempnam(const char *dir, const char *pfx)
+ 
+ 	for (try=0; try<MAXTRIES; try++) {
+ 		__randname(s+l-6);
+-#ifdef SYS_lstat
+-		r = __syscall(SYS_lstat, s, &(struct kstat){0});
++#ifdef SYS_readlink
++		r = __syscall(SYS_readlink, s, (char[1]){0}, 1);
+ #else
+-		r = __syscall(SYS_fstatat, AT_FDCWD, s,
+-			&(struct kstat){0}, AT_SYMLINK_NOFOLLOW);
++		r = __syscall(SYS_readlinkat, AT_FDCWD, s, (char[1]){0}, 1);
+ #endif
+ 		if (r == -ENOENT) return strdup(s);
+ 	}
+diff --git a/src/stdio/tmpnam.c b/src/stdio/tmpnam.c
+index d667a836..71dc8bb1 100644
+--- a/src/stdio/tmpnam.c
++++ b/src/stdio/tmpnam.c
+@@ -5,7 +5,6 @@
+ #include <string.h>
+ #include <stdlib.h>
+ #include "syscall.h"
+-#include "kstat.h"
+ 
+ #define MAXTRIES 100
+ 
+@@ -17,11 +16,10 @@ char *tmpnam(char *buf)
+ 	int r;
+ 	for (try=0; try<MAXTRIES; try++) {
+ 		__randname(s+12);
+-#ifdef SYS_lstat
+-		r = __syscall(SYS_lstat, s, &(struct kstat){0});
++#ifdef SYS_readlink
++		r = __syscall(SYS_readlink, s, (char[1]){0}, 1);
+ #else
+-		r = __syscall(SYS_fstatat, AT_FDCWD, s,
+-			&(struct kstat){0}, AT_SYMLINK_NOFOLLOW);
++		r = __syscall(SYS_readlinkat, AT_FDCWD, s, (char[1]){0}, 1);
+ #endif
+ 		if (r == -ENOENT) return strcpy(buf ? buf : internal, s);
+ 	}
 diff --git a/src/thread/loongarch64/__set_thread_area.s b/src/thread/loongarch64/__set_thread_area.s
 new file mode 100644
 index 00000000..6fd09a92
@@ -1305,3 +1665,58 @@ index 00000000..9f57d254
 +__cp_cancel:
 +	la.local $t8, __cancel
 +	jr	$t8
+diff --git a/src/time/__map_file.c b/src/time/__map_file.c
+index d3cefa82..c2b29fe8 100644
+--- a/src/time/__map_file.c
++++ b/src/time/__map_file.c
+@@ -2,15 +2,14 @@
+ #include <fcntl.h>
+ #include <sys/stat.h>
+ #include "syscall.h"
+-#include "kstat.h"
+ 
+ const char unsigned *__map_file(const char *pathname, size_t *size)
+ {
+-	struct kstat st;
++	struct stat st;
+ 	const unsigned char *map = MAP_FAILED;
+ 	int fd = sys_open(pathname, O_RDONLY|O_CLOEXEC|O_NONBLOCK);
+ 	if (fd < 0) return 0;
+-	if (!syscall(SYS_fstat, fd, &st)) {
++	if (!__fstat(fd, &st)) {
+ 		map = __mmap(0, st.st_size, PROT_READ, MAP_SHARED, fd, 0);
+ 		*size = st.st_size;
+ 	}
+diff --git a/src/time/clock_gettime.c b/src/time/clock_gettime.c
+index 3e1d0975..c7e66a51 100644
+--- a/src/time/clock_gettime.c
++++ b/src/time/clock_gettime.c
+@@ -80,10 +80,12 @@ int __clock_gettime(clockid_t clk, struct timespec *ts)
+ 		return __syscall_ret(r);
+ 	long ts32[2];
+ 	r = __syscall(SYS_clock_gettime, clk, ts32);
++#ifdef SYS_gettimeofday
+ 	if (r==-ENOSYS && clk==CLOCK_REALTIME) {
+ 		r = __syscall(SYS_gettimeofday, ts32, 0);
+ 		ts32[1] *= 1000;
+ 	}
++#endif
+ 	if (!r) {
+ 		ts->tv_sec = ts32[0];
+ 		ts->tv_nsec = ts32[1];
+@@ -92,6 +94,7 @@ int __clock_gettime(clockid_t clk, struct timespec *ts)
+ 	return __syscall_ret(r);
+ #else
+ 	r = __syscall(SYS_clock_gettime, clk, ts);
++#ifdef SYS_gettimeofday
+ 	if (r == -ENOSYS) {
+ 		if (clk == CLOCK_REALTIME) {
+ 			__syscall(SYS_gettimeofday, ts, 0);
+@@ -100,6 +103,7 @@ int __clock_gettime(clockid_t clk, struct timespec *ts)
+ 		}
+ 		r = -EINVAL;
+ 	}
++#endif
+ 	return __syscall_ret(r);
+ #endif
+ }

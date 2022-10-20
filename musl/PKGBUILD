@@ -15,7 +15,7 @@ source=(https://www.musl-libc.org/releases/musl-$pkgver.tar.gz{,.asc}
         0001-musl-add-loongarch64-support.patch)
 sha256sums=('7d5b0b6062521e4627e099e4c9dc8248d32a30285e959b7eecaa780cf8cfd4a4'
             'SKIP'
-            '6643ba8cbe7179676c260c8824184df9ff72a11fa818114b65c42c5ffeb1de8d')
+            '3c49faf5ec25f2b0591f5d6c2ea73d11f3257802e696493a45d1293d85108ccb')
 
 prepare() {
 	cd "$pkgname-$pkgver"
@@ -42,9 +42,3 @@ package() {
   install -Dm0644 README "$pkgdir"/usr/share/doc/musl/README
   install -Dm0644 COPYRIGHT "$pkgdir"/usr/share/licenses/musl/COPYRIGHT
 }
-sha256sums=('7d5b0b6062521e4627e099e4c9dc8248d32a30285e959b7eecaa780cf8cfd4a4'
-            'SKIP'
-            '76698c44ff8cabed6461827ba753fa75032f508e6787e0ef71f1c4b48e6ff725')
-sha256sums=('7d5b0b6062521e4627e099e4c9dc8248d32a30285e959b7eecaa780cf8cfd4a4'
-            'SKIP'
-            '4f52664d8d48479c5b377cb583b7287eb75a4157027022f48408f0eaa3e29d01')

@@ -3,29 +3,28 @@
 # Contributor: Jens Staal <staal1978@gmail.com>
 
 pkgname=kernel-headers-musl
-pkgver=5.10.61
-_rdate=20210906
+pkgver=6.0
+_rdate=20221017
 pkgrel=1
 pkgdesc="Linux kernel headers sanitized for use with musl libc"
 arch=('loong64' 'x86_64')
 url="https://github.com/sabotage-linux/kernel-headers"
 license=('LGPL')
+makedepends=(rsync)
 depends=('musl')
-source=(http://sources.loongarch.org:2020/archlinux/sources/linux-${pkgver}-${_rdate}.tar.xz)
+source=(https://github.com/yetist/linux/releases/download/v${_rdate}/linux-${pkgver}-${_rdate}.tar.xz)
+sha256sums=('ac4822f7dad35e42b1d0b02190eb876d80f3beefe9576ae8b45aeb5c5bc79eb1')
 
 _CARCH=$CARCH
 [[ $CARCH = i?86 ]] && _CARCH=x86
-[[ $CARCH = loongarch64 ]] && _CARCH=loongarch
+[[ $CARCH = loong64 ]] && _CARCH=loongarch
 
 build() {
   cd "$srcdir"/linux-${pkgver/_/-}
-  make ARCH=${_CARCH} prefix=/usr/lib/musl
+  make ARCH=${_CARCH} mrproper
 }
 
 package() {
   cd "$srcdir"/linux-${pkgver/_/-}
-  make ARCH=${_CARCH} prefix=/usr/lib/musl DESTDIR="$pkgdir" install
+  make ARCH=${_CARCH} INSTALL_HDR_PATH="$pkgdir/usr/lib/musl" headers_install
 }
-sha256sums=('e62cc4f2dbae2f5a23e51a6361d1afc3c6a933a4fe2708056b985d0f0c3f7997')
-sha256sums=('e62cc4f2dbae2f5a23e51a6361d1afc3c6a933a4fe2708056b985d0f0c3f7997')
-sha256sums=('75433fe1b833ddafd0be5ad6918889a48b7594aea01cb83a3f092e94e841b0f1')

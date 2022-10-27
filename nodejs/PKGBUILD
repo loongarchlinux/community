@@ -18,18 +18,11 @@ options=(!lto)
 depends=('brotli' 'openssl' 'zlib' 'icu' 'libuv' 'libnghttp2' 'c-ares') # 'http-parser' 'v8')
 makedepends=('python' 'procps-ng')
 optdepends=('npm: nodejs package manager')
-source=("https://github.com/nodejs/node/archive/v$pkgver/nodejs-$pkgver.tar.gz"
-    nodejs-gcc12-build.patch)
-sha512sums=('30a408b8f2ae41646f2ce3018862105ee4bd7913dd3cbbe8af8fc4d70cf64ac820342db9becff42c5a2b6f71d8dc3b539f580833f975b46628ad159712a8b109'
-            '8092d4f36bc098874dee25c3f00a1dfede4989fe640d014e551faff44ede5e5766c643dc26ebe302640ced4f78fb784f816e9fce77888e4e126a186287084dcb')
-
-prepare() {
-	cd "node-v$pkgver"
-	patch -p1 -i "$srcdir/nodejs-gcc12-build.patch"
-}
+source=("https://github.com/nodejs/node/archive/v$pkgver/nodejs-$pkgver.tar.gz")
+sha512sums=('30a408b8f2ae41646f2ce3018862105ee4bd7913dd3cbbe8af8fc4d70cf64ac820342db9becff42c5a2b6f71d8dc3b539f580833f975b46628ad159712a8b109')
 
 build() {
-  cd node-v$pkgver
+  cd node-$pkgver
 
   ./configure \
     --prefix=/usr \
@@ -49,12 +42,12 @@ build() {
 }
 
 check() {
-  cd node-v$pkgver
+  cd node-$pkgver
   make test || :
 }
 
 package() {
-  cd node-v$pkgver
+  cd node-$pkgver
 
   make DESTDIR="$pkgdir" install
 

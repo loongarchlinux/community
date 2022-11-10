@@ -24,6 +24,7 @@ prepare() {
 
 build() {
   cd uBlock
+  npm config set registry https://registry.loongnix.cn:5873/
   make
   strip-nondeterminism -t zip dist/build/uBlock0.firefox.xpi
 }

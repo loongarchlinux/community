@@ -14,7 +14,7 @@ url="https://github.com/docker/docker-py"
 license=("Apache")
 depends=('python-requests' 'python-six' 'python-websocket-client' 'python-docker-pycreds' 'python-paramiko')
 makedepends=('python-pip' 'python-requests' 'python-six' 'python-websocket-client'
-             'python-docker-pycreds')
+             'python-docker-pycreds' 'python-setuptools')
 checkdepends=('python-pytest' 'python-pytest-cov' 'python-pytest-timeout'
               'python-mock' 'python-coverage' 'flake8')
 provides=('python-docker-py')

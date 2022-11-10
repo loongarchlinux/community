@@ -17,12 +17,18 @@ sha256sums=('29a5058f8389986e5b17117d3ee4f78a2bf9c8886e07b16a49a94e5fc59a6850')
 
 prepare() {
     cd "$pkgname-$pkgver"
-    cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+#    cargo fetch --target "`uname -m`-unknown-linux-gnu"
 }
 
 build() {
     cd "$pkgname-$pkgver"
-    cargo build --release --frozen
+    find -name Cargo.lock -exec rm -f {} \;
+    mkdir -p .cargo
+    cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
+    cargo build --release
 
     "target/release/$pkgname" --completion zsh
     "target/release/$pkgname" --completion bash

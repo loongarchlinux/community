@@ -5,7 +5,7 @@
 
 pkgbase=libc++
 pkgname=(libc++ libc++abi libc++experimental)
-pkgver=14.0.6
+pkgver=16.0.0rc2
 pkgrel=1
 url="https://libcxx.llvm.org/"
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -14,8 +14,8 @@ depends=('gcc-libs')
 makedepends=('clang' 'cmake' 'ninja' 'python')
 checkdepends=('llvm')
 options=(!lto)
-source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-project-$pkgver.src.tar.xz"{,.sig})
-sha512sums=('6fc6eeb60fac698702d1aac495fc0161eb7216a1f8db2020af8fccec5837831f7cc20dc2a169bf4f0b5f520748280b4a86621f3697d622aa58faaa45dbfaad13'
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.0-rc2/llvm-project-$pkgver.src.tar.xz"{,.sig})
+sha512sums=('c68bb7f2a8004666ecc5c55e89e2ca1252b384e6240a2b7c5588b74794ffc6ce93bb4b0db394abba6436cce04a6de301e80821aeda04d7aab49efb96b6f8cf40'
             'SKIP')
 validpgpkeys=('474E22316ABF4785A88C6E8EA2C794A986419D8A' # Tom Stellard <tstellar@redhat.com> (.1 releases)
               'B6C8F98282B944E3B0D5C2530FC3042E345AD05D') # Hans Wennborg <hans@chromium.org> (.0 releases)

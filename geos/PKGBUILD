@@ -5,7 +5,7 @@
 # Contributor: Alexander Rødseth <rodseth@gmail.com>
 
 pkgname=geos
-pkgver=3.11.1
+pkgver=3.11.2
 pkgrel=1
 pkgdesc="C/C++ library for computational geometry"
 arch=(loong64 x86_64)
@@ -15,8 +15,14 @@ depends=(gcc-libs bash)
 makedepends=(cmake)
 options=(!emptydirs)
 changelog=$pkgname.changelog
-source=(https://download.osgeo.org/$pkgname/$pkgname-$pkgver.tar.bz2)
-sha256sums=('6d0eb3cfa9f92d947731cc75f1750356b3bdfc07ea020553daf6af1c768e0be2')
+source=(https://download.osgeo.org/$pkgname/$pkgname-$pkgver.tar.bz2
+	$pkgname-$pkgver-gcc13.patch)
+sha256sums=('b1f077669481c5a3e62affc49e96eb06f281987a5d36fdab225217e5b825e4cc'
+            '87e5de84683f2183e593b9578539a36ba39f43c07f79f9f6b09b0faeb972c25e')
+
+prepare(){
+  patch -Np1 -i  ./$pkgname-$pkgver-gcc13.patch
+}
 
 build() {
   cmake -B build -S $pkgname-$pkgver \

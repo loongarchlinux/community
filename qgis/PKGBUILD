@@ -24,8 +24,14 @@ depends=(ocl-icd proj geos gdal expat spatialindex qwt libzip sqlite3 protobuf
 makedepends=(cmake ninja opencl-clhpp fcgi qt5-tools sip pyqt-builder)
 optdepends=('fcgi: Map server'
             'gpsbabel: GPS Tools plugin')
-source=(https://qgis.org/downloads/$pkgname-$pkgver.tar.bz2)
-sha256sums=('a09124f46465a520f6d735306ba3954c339b84aa396d6f52b476b82edcc4fe0e')
+source=(https://qgis.org/downloads/$pkgname-$pkgver.tar.bz2
+    qgis-gcc13.patch)
+sha256sums=('a09124f46465a520f6d735306ba3954c339b84aa396d6f52b476b82edcc4fe0e'
+    SKIP)
+
+prepare(){
+  patch -d $pkgname-$pkgver -Np1 -i  $srcdir/$pkgname-gcc13.patch
+}
 
 build() {
   cmake -S $pkgname-$pkgver -B build -G Ninja \

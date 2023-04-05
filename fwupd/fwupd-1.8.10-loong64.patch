@@ -1,18 +1,8 @@
-From 57a06c8319ee4515ff7b957e5305c5cc11e2c591 Mon Sep 17 00:00:00 2001
-From: Xiaotian Wu <wuxiaotian@loongson.cn>
-Date: Thu, 12 May 2022 19:08:38 +0800
-Subject: [PATCH] Add support for loongarch64
-
----
- meson.build                           | 2 ++
- plugins/uefi-capsule/fu-uefi-common.c | 2 ++
- 2 files changed, 4 insertions(+)
-
 diff --git a/meson.build b/meson.build
-index f3538635..1e476648 100644
+index 9ae278b66..91fad3dbc 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -421,6 +421,8 @@ if build_standalone and efiboot.found() and efivar.found()
+@@ -430,6 +430,8 @@ if build_standalone and efiboot.found() and efivar.found()
            EFI_MACHINE_TYPE_NAME = 'arm'
    elif host_cpu == 'aarch64'
            EFI_MACHINE_TYPE_NAME = 'aa64'
@@ -22,7 +12,7 @@ index f3538635..1e476648 100644
            EFI_MACHINE_TYPE_NAME = ''
    endif
 diff --git a/plugins/uefi-capsule/fu-uefi-common.c b/plugins/uefi-capsule/fu-uefi-common.c
-index 473471b5..bdffffbc 100644
+index e501c54ef..39dfc7328 100644
 --- a/plugins/uefi-capsule/fu-uefi-common.c
 +++ b/plugins/uefi-capsule/fu-uefi-common.c
 @@ -26,6 +26,8 @@ fu_uefi_bootmgr_get_suffix(GError **error)
@@ -34,6 +24,3 @@ index 473471b5..bdffffbc 100644
  #endif
  #if defined(__x86_64__) || defined(__i386__) || defined(__i686__)
  		{32, "ia32"},
--- 
-2.35.1
-

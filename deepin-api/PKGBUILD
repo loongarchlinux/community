@@ -30,7 +30,6 @@ sha512sums=('a71b836bac72bc49433902b1e86090dd838250c71cf6788d3989153de8e37c95e16
             'e894eb3928af9e244fa78010fdf16c8abb6ce18df114cf05327d02b18774d6ba5b023e4dfa0d07042f4e44a5c6e2ddb55b07f3e0db466a0e6169b52465fdefd6')
 
 export GO111MODULE=off
-set -x
 
 prepare() {
   export GOPATH="$srcdir/gobuild:/usr/share/gocode"
@@ -43,20 +42,19 @@ prepare() {
 }
 
 build(){
-  export GOPATH="$srcdir/build:/usr/share/gocode"
   export CGO_CPPFLAGS="${CPPFLAGS}"
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CXXFLAGS="${CXXFLAGS}"
   export CGO_LDFLAGS="${LDFLAGS}"
-  export GOFLAGS="-trimpath -mod=readonly -modcacherw"
+  export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
 
   cd dde-api-$pkgver
-  proxychains -q make
+  make
 }
 
 package() {
   cd dde-api-$pkgver
-  proxychains -q make DESTDIR="$pkgdir" SYSTEMD_LIB_DIR=/usr/lib install
+  make DESTDIR="$pkgdir" SYSTEMD_LIB_DIR=/usr/lib install
 
   install -Dm644 ../deepin-api.sysusers "$pkgdir"/usr/lib/sysusers.d/deepin-api.conf
 }

@@ -33,11 +33,7 @@ build() {
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CXXFLAGS="${CXXFLAGS}"
   export CGO_LDFLAGS="${LDFLAGS}"
-  export GOFLAGS="-trimpath -mod=readonly -modcacherw"
-
-#export GOPATH="$srcdir/build:/usr/share/gocode"
-#go mod edit -replace=golang.org/x/sys@v0.0.0-20220128215802-99c3d69c2c27=$srcdir/sys
-
+  export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
 
   cd "$srcdir"/build/src/github.com/linuxdeepin/go-dbus-factory
   make bin

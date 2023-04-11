@@ -3,7 +3,7 @@
 
 _srcname=SPIRV-LLVM-Translator
 pkgname=${_srcname,,}
-pkgver=15.0.0.r10+g78ad93b9
+pkgver=16.0.0
 pkgrel=1
 pkgdesc="Tool and a library for bi-directional translation between SPIR-V and LLVM IR"
 arch=(loong64 x86_64)
@@ -13,7 +13,7 @@ depends=(llvm-libs spirv-tools)
 makedepends=(git cmake llvm spirv-headers)
 checkdepends=(python python-setuptools clang)
 # Current point in the used LLVM branch
-_commit=78ad93b9952cb78889b86e9aa390d013c49dca0b
+_commit=81c9ac632ead5c233728725179ed2530c2c820ec
 source=(git+${url}.git#commit=$_commit)
 sha256sums=('SKIP')
 
@@ -32,6 +32,7 @@ build() {
     -DLLVM_INCLUDE_TESTS=ON \
     -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
     -DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=/usr/include/spirv/ \
+    -DBASE_LLVM_VERSION=16.0.0 \
     -Wno-dev
   make -C build
 }

@@ -52,7 +52,7 @@ prepare() {
   git config submodule.pluginterfaces.url ../vst3_pluginterfaces
   git config submodule.public.sdk.url ../vst3_public_sdk
   git config submodule.vstgui4.url ../vstgui
-  git submodule update
+  git -c protocol.file.allow=always submodule update
 }
 
 package_vst3sdk() {

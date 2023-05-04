@@ -25,15 +25,18 @@ replaces=(go-pie)
 provides=(go-pie)
 options=(!strip staticlibs)
 source=(https://go.dev/dl/go${pkgver}.src.tar.gz{,.asc}
-    0001-add-pie-support.patch)
+http://public.loongarch.dev/sources/go/go1.20.2-patch.tar.xz/d4b24dae3bec3850a948d9c6703f1a42/go1.20.2-patch.tar.xz)
 validpgpkeys=('EB4C1BFD4F042F6DDDCCEC917721F63BD38B4796')
 sha256sums=('4d0e2850d197b4ddad3bdb0196300179d095bb3aefd4dfbc3b36702c3728f8ab'
             'SKIP'
-            '09693bf9a0d73c83be79d0f367a08c8a227a638736b5fd3a392f8b3c7c88267a')
+            '89f3e810dd6945fe6f9392f89be0778e829b41ce02f8e5971d89f2955cf315ba')
 
 prepare() {
   cd "$pkgname"
-  patch -p1 -i $srcdir/0001-add-pie-support.patch
+  for i in $srcdir/go1.20.2-patch/*.patch;
+  do
+    patch -p1 -i $i
+  done
 }
 
 build() {

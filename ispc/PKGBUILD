@@ -24,7 +24,7 @@ source=(ispc-${_ispccommit}.tar.gz::https://github.com/ispc/ispc/archive/${_ispc
         ispc-libclang-linking.patch::https://github.com/ispc/ispc/pull/2422.patch)
 sha256sums=('e0181f0f4dc78809166a8c28a46a3cb1f24d3dbbead4f4ff7e4ebfd8d109ebbd'
             'b44b5d37b62e7e54887f07f9862e7dce537aa9922e80995007bcffe6ab9058d4'
-            'bcc35d7a2017c59ce8657260b2cd9b9494bbccb556cabdd54d59e4c47b14fba9')
+            '5233b168953b2cd5311ba225dd6d0e3c45c73469e75f631e2f55d918b987207f')
 
 prepare() {
   mv ispc-${_ispccommit} ispc-${pkgver} 

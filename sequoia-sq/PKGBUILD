@@ -26,6 +26,11 @@ build() {
   export CARGO_TARGET_DIR=../target
   CARGO_REGISTRIES_MY_REGISTRY_INDEX="https://gitee.com/yetist/crates.io-index"
   rm -f $srcdir/sequoia/Cargo.lock
+  mkdir -p .cargo
+  cat > .cargo/config.toml <<EOF
+[source.crates-io]
+registry = "https://gitee.com/yetist/crates.io-index"
+EOF
 
   cargo build -v --release --features 'crypto-nettle compression-bzip2 autocrypt'
 }
